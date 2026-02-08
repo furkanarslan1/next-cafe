@@ -11,17 +11,15 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <div className="h-16 w-full flex items-center justify-center md:justify-between  px-6 mx-auto bg-transparent backdrop-blur-lg ">
+    <div className="relative h-16 w-full flex items-center justify-center md:justify-between  px-6 mx-auto bg-transparent  ">
+      <div className="absolute inset-0 bg-black/30 "></div>
       {/* BRAND */}
-      <Link
-        href="/"
-        className="flex items-center gap-2 px-4 py-2  text-amber-800"
-      >
+      <Link href="/" className="relative z-10 flex items-center gap-2 px-4 py-2  text-white">
         <Coffee className=" font-extrabold " />
         <p className=" font-bold">Next Cafe</p>
       </Link>
       {/* NAV LINKS */}
-      <div className="hidden md:flex items-center gap-4">
+      <div className="relative z-10 hidden md:flex items-center gap-4">
         {navLinks.map((nav) => {
           const isActive = pathname.startsWith(nav.href);
 
@@ -31,13 +29,13 @@ export default function Header() {
               key={nav.href}
               className={cn(
                 "relative group py-1 transition-colors",
-                isActive ? "text-amber-800 font-bold" : "text-amber-900/70",
+                isActive ? "text-white font-bold" : "text-white",
               )}
             >
               {nav.label}
               <span
                 className={cn(
-                  "absolute left-1/2 bottom-0 h-0.5 bg-amber-800 transition-all duration-500",
+                  "absolute left-1/2 bottom-0 h-0.5 bg-white transition-all duration-500",
                   isActive
                     ? "w-full left-0"
                     : "w-0 group-hover:w-full group-hover:left-0",
@@ -48,10 +46,10 @@ export default function Header() {
         })}
       </div>
       {/* SOCİAL LINKS */}
-      <div className="hidden md:flex items-center gap-2">
+      <div className="relative z-10 hidden md:flex items-center gap-2">
         {socialLinks.map((social) => (
           <Link href={social.href} key={social.href} target="_blank">
-            <social.icon className="size-5 text-amber-800" />
+            <social.icon className="size-5 text-white" />
           </Link>
         ))}
       </div>

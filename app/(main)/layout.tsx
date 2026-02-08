@@ -8,7 +8,7 @@ export default function MainLayout({
 }>) {
   return (
     <div>
-      <header>
+      <header className="absolute top-0 left-0 w-full z-30">
         <Header />
       </header>
       <main>{children}</main>
