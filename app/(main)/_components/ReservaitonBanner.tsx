@@ -7,7 +7,7 @@ export default function ReservaitonBanner() {
       <div className="flex flex-col md:flex-row  md:justify-between md:items-center p-4 bg-linear-to-r from-stone-50 to-stone-300">
         <div className="relative aspect-square w-full">
           <Image
-            src="/coffe-image-2.png"
+            src="/coffe-image-2.webp"
             alt="reservation-banner-image"
             fill
             className="object-contain"

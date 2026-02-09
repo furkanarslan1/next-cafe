@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "./_components/Footer";
 import Header from "./_components/Header";
 
 export default function MainLayout({
@@ -12,7 +13,7 @@ export default function MainLayout({
         <Header />
       </header>
       <main>{children}</main>
-      <footer></footer>
+      <Footer />
     </div>
   );
 }
