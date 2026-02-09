@@ -1,4 +1,5 @@
 import CustomerFavorites from "./_components/CustomerFavorites";
+import HomeAbout from "./_components/HomeAbout";
 import HomeContact from "./_components/HomeContact";
 import HomeHero from "./_components/HomeHero";
 import ReservaitonBanner from "./_components/ReservaitonBanner";
@@ -11,6 +12,7 @@ export default function Home() {
         <CustomerFavorites />
       </div>
       <ReservaitonBanner />
+      <HomeAbout />
       <HomeContact />
     </div>
   );
