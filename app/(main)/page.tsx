@@ -1,3 +1,4 @@
+import CafeGallery from "./_components/CafeGallery";
 import CustomerFavorites from "./_components/CustomerFavorites";
 import HomeAbout from "./_components/HomeAbout";
 import HomeContact from "./_components/HomeContact";
@@ -13,6 +14,7 @@ export default function Home() {
       </div>
       <ReservaitonBanner />
       <HomeAbout />
+      <CafeGallery />
       <HomeContact />
     </div>
   );
