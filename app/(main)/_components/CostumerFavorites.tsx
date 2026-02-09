@@ -1,3 +1,4 @@
+import ItemsSlider from "@/components/ItemsSlider";
 import React from "react";
 
 const customerFavoritesItems = [
@@ -45,7 +46,10 @@ export default function CostumerFavorites() {
     <div>
       <h1>Customer Favorites</h1>
       <p>The most loved flavors, chosen by our guests.</p>
-      <ItemSlider items={customerFavoritesItems} />
+      <ItemsSlider
+        sliderId="customer-favorites-slider"
+        items={customerFavoritesItems}
+      />
     </div>
   );
 }
