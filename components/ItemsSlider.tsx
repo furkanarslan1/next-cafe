@@ -19,7 +19,7 @@ export default function ItemsSlider({ items, sliderId }: ItemsSliderProps) {
   const prevClass = `${sliderId}-prev`;
   const nextClass = `${sliderId}-next`;
   return (
-    <div className="max-w-7xl mx-auto space-y-4 mb-60 ">
+    <div className="max-w-7xl mx-auto space-y-4  ">
       <div className="relative">
         <button
           className={`${prevClass} absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center text-black cursor-pointer hover:scale-110 transition-transform`}
