@@ -7,7 +7,7 @@ const customerFavoritesItems = [
     title: "Cappuccino",
     description: "Rich espresso with steamed milk and creamy foam",
     price: 95,
-    image: "/costumer-favorites/cappuccino.webp",
+    image: "/customer-favorites/cappuccino.webp",
     category: "coffee",
     isPopular: true,
   },
@@ -26,7 +26,7 @@ const customerFavoritesItems = [
     title: "Chocolate Brownie",
     description: "Warm brownie served with rich chocolate flavor",
     price: 110,
-    image: "/costumer-favorites/brownie.webp",
+    image: "/customer-favorites/brownie.webp",
     category: "dessert",
     isPopular: true,
   },
@@ -35,17 +35,17 @@ const customerFavoritesItems = [
     title: "Croissant",
     description: "Freshly baked, crispy outside and soft inside",
     price: 75,
-    image: "/costumer-favorites/croissant.jpg",
+    image: "/customer-favorites/croissant.webp",
     category: "bakery",
     isPopular: true,
   },
 ];
 
-export default function CostumerFavorites() {
+export default function CustomerFavorites() {
   return (
-    <div>
-      <h1>Customer Favorites</h1>
-      <p>The most loved flavors, chosen by our guests.</p>
+    <div className="p-4">
+      <h1 className="font-bold text-2xl">Customer Favorites</h1>
+      <p className=" text-sm">The most loved flavors, chosen by our guests.</p>
       <ItemsSlider
         sliderId="customer-favorites-slider"
         items={customerFavoritesItems}
