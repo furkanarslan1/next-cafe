@@ -6,7 +6,7 @@ export const navLinks: NavLinksType[] = [
     label: "Menu",
   },
   {
-    href: "/about-us",
+    href: "/about",
     label: "About Us",
   },
   {
