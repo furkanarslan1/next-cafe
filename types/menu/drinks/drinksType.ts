@@ -5,12 +5,11 @@ export type MainCategory = "drinks" | "meals" | "desserts";
 export type DrinkTemperature = "hot" | "cold";
 export type DrinkType = "coffee" | "tea" | "other";
 
-// Category tree (visitor read-only)
-export type CategoryTreeType = {
+// Category (flat, no nesting)
+export type DrinksCategoryType = {
   id: number;
   title: string;
   slug: string;
-  children?: CategoryTreeType[];
 };
 
 // Product

@@ -1,51 +1,20 @@
 import {
-  CategoryTreeType,
   DrinkProductType,
+  DrinksCategoryType,
 } from "@/types/menu/drinks/drinksType";
 import DrinkItems from "./_components/DrinkItems";
+import DrinksCategories from "./_components/DrinksCategories";
 
-export const drinksCategoryTreeMock: CategoryTreeType[] = [
-  {
-    id: 1,
-    title: "Drinks",
-    slug: "drinks",
-    children: [
-      {
-        id: 2,
-        title: "Hot",
-        slug: "hot",
-        children: [
-          {
-            id: 3,
-            title: "Coffee",
-            slug: "coffee",
-          },
-          {
-            id: 4,
-            title: "Tea",
-            slug: "tea",
-          },
-        ],
-      },
-      {
-        id: 5,
-        title: "Cold",
-        slug: "cold",
-        children: [
-          {
-            id: 6,
-            title: "Coffee",
-            slug: "coffee",
-          },
-          {
-            id: 7,
-            title: "Tea",
-            slug: "tea",
-          },
-        ],
-      },
-    ],
-  },
+export const drinksCategoriesMock: DrinksCategoryType[] = [
+  { id: 1, title: "Coffee", slug: "coffee" },
+  { id: 2, title: "Tea", slug: "tea" },
+  { id: 3, title: "Cold Drinks", slug: "cold-drinks" },
+  { id: 4, title: "Hot Drinks", slug: "hot-drinks" },
+  { id: 5, title: "Smoothies", slug: "smoothies" },
+  { id: 6, title: "Milkshakes", slug: "milkshakes" },
+  { id: 7, title: "Soft Drinks", slug: "soft-drinks" },
+  { id: 8, title: "Fresh Juices", slug: "fresh-juices" },
+  { id: 9, title: "Specialty Drinks", slug: "specialty-drinks" },
 ];
 
 export const drinksProductsMock: DrinkProductType[] = [
@@ -167,6 +136,7 @@ export default async function DrinksPage() {
   return (
     <div>
       <div className="h-16 w-full bg-stone-800 text-white"></div>
+      <DrinksCategories categories={drinksCategoriesMock} />
       <DrinkItems drinks={drinksProductsMock} />
     </div>
   );
