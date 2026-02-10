@@ -1,4 +1,4 @@
-import { MenuPageLinksType } from "@/types/MenuTypes";
+import { MenuPageLinksType } from "@/types/menu/MenuTypes";
 import {
   Cake,
   CakeSlice,
