@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { DrinkTemperature } from "./drinks/drinksType";
 import { MealType } from "./meals/mealsType";
+import { DessertType } from "./desserts/dessertsType";
 
 export interface MenuPageLinksType {
   id: number;
@@ -30,6 +31,8 @@ export type ProductType = {
   drinkTemperature?: DrinkTemperature;
   //for meals
   mealType?: MealType;
+  //for deserts
+  dessertType?: DessertType;
   category: string;
 
   isActive: boolean;

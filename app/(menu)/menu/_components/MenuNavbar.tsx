@@ -4,11 +4,13 @@ import {
   Cake,
   CakeSlice,
   Coffee,
+  Cookie,
   Egg,
   IceCream,
   LucideIcon,
   Menu,
   Sandwich,
+  Sparkles,
   Utensils,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -39,8 +41,11 @@ export default function MenuNavbar() {
     }
     if (pathname.includes("/desserts")) {
       return [
-        { feature: "cakes", icon: Cake },
+        { feature: "cake", icon: Cake },
         { feature: "pastry", icon: CakeSlice },
+        { feature: "cookie", icon: Cookie },
+        { feature: "ice-cream", icon: IceCream },
+        { feature: "special", icon: Sparkles },
       ];
     }
     return [];
@@ -64,9 +69,9 @@ export default function MenuNavbar() {
   if (items.length === 0) return null;
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-fit bg-linear-to-t from-black to-black/40 h-16 z-30 text-white rounded-xl border border-slate-300 flex items-center justify-center">
-      <div className="relative flex items-center gap-8 text-xl px-4">
+      <div className="relative flex items-center gap-4 text-xl px-4">
         <button className="" onClick={() => router.push("/menu")}>
-          <Menu className="size-10" />
+          <Menu className="size-5" />
         </button>
         {items.map((item) => {
           const Icon = item.icon;
@@ -78,7 +83,7 @@ export default function MenuNavbar() {
               className="relative z-10 p-2 rounded-xl"
             >
               <div>
-                <Icon className="size-10" />
+                <Icon className="size-5" />
               </div>
             </div>
           );
