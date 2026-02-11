@@ -9,9 +9,9 @@ export default function MenuLayout({
 }>) {
   return (
     <>
-      <header className="absolute top-0 left-0 w-full z-30">
+      {/* <header className="absolute top-0 left-0 w-full z-30">
         <Header />
-      </header>
+      </header> */}
       <main className="min-h-screen">{children}</main>
       <div className="fixed bottom-10 left-0 w-80 mx-auto z-30">
         <MenuNavbar />

@@ -3,12 +3,12 @@
 import {
   Cake,
   CakeSlice,
-  ChevronLeft,
   Coffee,
   Egg,
   IceCream,
   LucideIcon,
   Menu,
+  Sandwich,
   Utensils,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -33,7 +33,8 @@ export default function MenuNavbar() {
     if (pathname.includes("/meals")) {
       return [
         { feature: "breakfast", icon: Egg },
-        { feature: "lunch", icon: Utensils },
+        { feature: "lunch", icon: Sandwich },
+        { feature: "dinner", icon: Utensils },
       ];
     }
     if (pathname.includes("/desserts")) {

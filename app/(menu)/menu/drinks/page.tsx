@@ -1,10 +1,9 @@
-import {
-  DrinkProductType,
-  DrinksCategoryType,
-} from "@/types/menu/drinks/drinksType";
-import DrinkItems from "./_components/DrinkItems";
-import DrinksCategories from "./_components/DrinksCategories";
+import { DrinksCategoryType } from "@/types/menu/drinks/drinksType";
+
 import { Suspense } from "react";
+import { ProductType } from "@/types/menu/MenuTypes";
+import MenuCategories from "../_components/MenuCategories";
+import MenuItems from "../_components/MenuItems";
 
 export const drinksCategoriesMock: DrinksCategoryType[] = [
   { id: 1, title: "Coffee", slug: "coffee", drinkTemperature: "hot" },
@@ -33,7 +32,7 @@ export const drinksCategoriesMock: DrinksCategoryType[] = [
   },
 ];
 
-export const drinksProductsMock: DrinkProductType[] = [
+export const drinksProductsMock: ProductType[] = [
   {
     id: 1,
     slug: "mocha",
@@ -43,7 +42,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/cappuccino.webp",
     mainCategory: "drinks",
     drinkTemperature: "hot",
-    drinkType: "coffee",
+    category: "coffee",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 1,
@@ -57,7 +56,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "hot",
-    drinkType: "coffee",
+    category: "coffee",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 2,
@@ -71,7 +70,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "hot",
-    drinkType: "coffee",
+    category: "coffee",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 3,
@@ -85,7 +84,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "cold",
-    drinkType: "coffee",
+    category: "coffee",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 4,
@@ -99,7 +98,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "cold",
-    drinkType: "coffee",
+    category: "coffee",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 5,
@@ -113,7 +112,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "hot",
-    drinkType: "tea",
+    category: "tea",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 6,
@@ -127,7 +126,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "hot",
-    drinkType: "tea",
+    category: "tea",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 7,
@@ -141,7 +140,7 @@ export const drinksProductsMock: DrinkProductType[] = [
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
     drinkTemperature: "cold",
-    drinkType: "tea",
+    category: "tea",
     isActive: true,
     createdAt: "2025-01-01",
     displayOrder: 8,
@@ -155,24 +154,26 @@ interface DrinkPageProps {
 export default async function DrinksPage({ searchParams }: DrinkPageProps) {
   const { drinkTemperature, category } = await searchParams;
   const temperature = drinkTemperature || "hot";
-  const selectedCategory = category || "coffee";
 
   const filteredCategories = drinksCategoriesMock.filter(
     (cat) => cat.drinkTemperature === temperature,
   );
+  const selectedCategory = category || filteredCategories[0].slug;
 
   const filteredDrinks = drinksProductsMock.filter(
     (drink) =>
       drink.drinkTemperature === temperature &&
-      drink.drinkType === selectedCategory,
+      drink.category === selectedCategory,
   );
   return (
     <div>
-      <div className="h-16 w-full bg-stone-800 text-white"></div>
       <Suspense fallback={<div className="h-20">Loading...</div>}>
-        <DrinksCategories categories={filteredCategories} />
+        <MenuCategories
+          selectedCategory={selectedCategory}
+          categories={filteredCategories}
+        />
       </Suspense>
-      <DrinkItems drinks={filteredDrinks} />
+      <MenuItems items={filteredDrinks} />
     </div>
   );
 }

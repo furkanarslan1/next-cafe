@@ -3,7 +3,7 @@ import React from "react";
 
 export default function MenuHero() {
   return (
-    <div className="relative h-[40vh] w-full">
+    <div className="relative h-[20vh] w-full">
       <Image
         src="/next-cafe-hero.webp"
         alt="about-hero-image"
