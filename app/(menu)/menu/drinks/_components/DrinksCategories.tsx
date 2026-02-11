@@ -1,6 +1,6 @@
 "use client";
 import { DrinksCategoryType } from "@/types/menu/drinks/drinksType";
-import Link from "next/link";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface DrinksCategoriesProps {

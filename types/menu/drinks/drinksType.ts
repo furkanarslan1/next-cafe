@@ -10,6 +10,7 @@ export type DrinksCategoryType = {
   id: number;
   title: string;
   slug: string;
+  drinkTemperature: DrinkTemperature;
 };
 
 // Product
