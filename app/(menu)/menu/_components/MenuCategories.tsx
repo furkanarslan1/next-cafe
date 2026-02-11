@@ -1,5 +1,4 @@
 "use client";
-import { DrinksCategoryType } from "@/types/menu/drinks/drinksType";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 

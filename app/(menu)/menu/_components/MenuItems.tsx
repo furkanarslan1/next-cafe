@@ -1,5 +1,6 @@
 import { ProductType } from "@/types/menu/MenuTypes";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface MenuItemsProps {
@@ -16,14 +17,17 @@ export default function MenuItems({ items }: MenuItemsProps) {
         >
           {/*  IMAGE */}
 
-          <div className="relative h-20 w-20 shrink-0">
+          <Link
+            href={`/menu/product/${item.slug}`}
+            className="relative h-20 w-20 shrink-0"
+          >
             <Image
               src={item.image || "/customer-favorites/brownie.webp"}
               alt={item.title || "drink-image"}
               fill
               className="object-contain"
             />
-          </div>
+          </Link>
           {/*  TITLE & PRICE */}
           <div className="flex flex-col flex-1">
             <div className="flex items-center justify-between w-full">

@@ -35,9 +35,9 @@ export const drinksCategoriesMock: DrinksCategoryType[] = [
 export const drinksProductsMock: ProductType[] = [
   {
     id: 1,
-    slug: "mocha",
-    title: "mocha",
-    description: "Rich and bold mocha shot",
+    slug: "espresso",
+    title: "Espresso",
+    description: "Rich and bold espresso shot",
     price: 70,
     image: "/customer-favorites/cappuccino.webp",
     mainCategory: "drinks",
@@ -49,9 +49,9 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 2,
-    slug: "mocha",
-    title: "mocha",
-    description: "mocha with hot water",
+    slug: "americano",
+    title: "Americano",
+    description: "Espresso with hot water",
     price: 80,
     image: "/customer-favorites/mocha.webp",
     mainCategory: "drinks",
@@ -77,7 +77,7 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 4,
-    slug: "mocha",
+    slug: "iced-mocha",
     title: "Iced mocha",
     description: "Chilled mocha with milk",
     price: 100,
@@ -91,7 +91,7 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 5,
-    slug: "mocha",
+    slug: "cold-brew",
     title: "Cold Brew",
     description: "Slow brewed cold coffee",
     price: 110,
@@ -105,7 +105,7 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 6,
-    slug: "mocha",
+    slug: "black-tea",
     title: "Black Tea",
     description: "Classic brewed black tea",
     price: 60,
@@ -119,7 +119,7 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 7,
-    slug: "mocha",
+    slug: "green-tea",
     title: "Green Tea",
     description: "Light and refreshing green tea",
     price: 65,
@@ -133,7 +133,7 @@ export const drinksProductsMock: ProductType[] = [
   },
   {
     id: 8,
-    slug: "mocha",
+    slug: "iced-tea",
     title: "Iced Tea",
     description: "Freshly brewed iced tea",
     price: 75,
