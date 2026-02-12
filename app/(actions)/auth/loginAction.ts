@@ -19,8 +19,7 @@ export async function loginAction(values: LoginValues) {
     error: authError,
   } = await supabase.auth.signInWithPassword({ email, password });
   if (authError || !user) {
-    // return { error: "Invalid credentials. Please try again." };
-    return { error: "AUTH_HATASI: " + authError?.message };
+    return { error: "Invalid credentials. Please try again." };
   }
 
   const { data: adminData, error: adminError } = await supabase
@@ -33,8 +32,7 @@ export async function loginAction(values: LoginValues) {
     // Admin değilse oturumu kapat ki arkada açık kalmasın
     // If you're not an admin, log out so it doesn't stay open in the background.
     await supabase.auth.signOut();
-    // return { error: "You do not have permission to access this panel." };
-    return { error: "ADMIN_TABLO_HATASI: Yetki bulunamadı." };
+    return { error: "You do not have permission to access this panel." };
   }
 
   revalidatePath("/", "layout");
