@@ -1,10 +1,10 @@
-import { ProductType } from "@/types/menu/MenuTypes";
+import { Product } from "@/types/menu/MenuTypes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 interface MenuItemsProps {
-  items: ProductType[];
+  items: Product[];
 }
 
 export default function MenuItems({ items }: MenuItemsProps) {
@@ -32,7 +32,7 @@ export default function MenuItems({ items }: MenuItemsProps) {
           <div className="flex flex-col flex-1">
             <div className="flex items-center justify-between w-full">
               <p className="font-bold">{item.title}</p>
-              <p className="text-green-600">${item.price}</p>
+              <p className="text-green-600">${item.basePrice}</p>
             </div>
             {/*  DESC */}
             <p className="text-gray-500">

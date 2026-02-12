@@ -1,9 +1,10 @@
 "use client";
 
+import { CategoryType } from "@/types/menu/MenuTypes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface MenuCategoriesProps {
-  categories: { id: number; title: string; slug: string }[];
+  categories: CategoryType[];
   selectedCategory: string;
 }
 

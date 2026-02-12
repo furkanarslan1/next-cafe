@@ -1,4 +1,4 @@
-import { ProductType } from "@/types/menu/MenuTypes";
+import { DrinkProduct } from "@/types/menu/MenuTypes";
 import Image from "next/image";
 import React from "react";
 
@@ -8,24 +8,20 @@ interface ProductDetailPageProps {
   }>;
 }
 
-export const mockDrinkProduct: ProductType = {
-  id: 201,
+export const mockDrinkProduct: DrinkProduct = {
+  id: "201",
   slug: "hot-latte",
   title: "Hot Latte",
   description: "Smooth espresso blended with steamed milk and light foam.",
-  price: 120,
+  basePrice: 120,
   image: "/customer-favorites/brownie.webp",
 
   mainCategory: "drinks",
-  drinkTemperature: "hot",
-  mealType: undefined,
-  dessertType: undefined,
-  category: "latte",
+  temperature: "hot",
+  categoryId: "latte",
 
   isActive: true,
   createdAt: "2026-02-11",
-
-  displayOrder: 1,
 
   isFeatured: true,
   isNew: true,
@@ -77,7 +73,7 @@ export default async function ProductDetailPage({
             <h1 className="font-bold text-2xl ">{mockDrinkProduct.title}</h1>
             {/* PRICE */}
             <p className="font-bold text-green-600">
-              ${mockDrinkProduct.price}
+              ${mockDrinkProduct.basePrice}
             </p>
             {/* DESC */}
             <p className="text-sm">{mockDrinkProduct.description}</p>
@@ -86,7 +82,7 @@ export default async function ProductDetailPage({
         <div className="space-y-1">
           <p className="text-sm  ">
             <span className="font-bold">Category: </span>
-            {mockDrinkProduct.category}
+            {mockDrinkProduct.categoryId}
           </p>
           <p className="text-sm">
             <span className="font-bold">Calories:</span>{" "}

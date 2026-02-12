@@ -1,10 +1,10 @@
 "use client";
-import { DrinksCategoryType } from "@/types/menu/drinks/drinksType";
+import { CategoryType } from "@/types/menu/MenuTypes";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface DrinksCategoriesProps {
-  categories: DrinksCategoryType[];
+  categories: CategoryType[];
 }
 
 export default function DrinksCategories({

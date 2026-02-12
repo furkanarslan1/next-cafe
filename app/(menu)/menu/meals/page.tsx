@@ -1,59 +1,63 @@
-import { MealsCategoryType } from "@/types/menu/meals/mealsType";
-import { ProductType } from "@/types/menu/MenuTypes";
+import { CategoryType, MealProduct } from "@/types/menu/MenuTypes";
 import React, { Suspense } from "react";
 import MenuCategories from "../_components/MenuCategories";
 import MenuItems from "../_components/MenuItems";
 
-export const mockMealsCategories: MealsCategoryType[] = [
+export const mockMealsCategories: CategoryType[] = [
   // ================= BREAKFAST =================
   {
-    id: 1,
+    id: "1",
     title: "Breakfast Plates",
     slug: "plate",
-    mealType: "breakfast",
+    mainCategory: "meals",
+    subType: "breakfast",
   },
   {
-    id: 2,
+    id: "2",
     title: "Toasts",
     slug: "toast",
-    mealType: "breakfast",
+    mainCategory: "meals",
+    subType: "breakfast",
   },
 
   // ================= LUNCH =================
   {
-    id: 3,
+    id: "3",
     title: "Salads",
     slug: "salad",
-    mealType: "lunch",
+    mainCategory: "meals",
+    subType: "lunch",
   },
   {
-    id: 4,
+    id: "4",
     title: "Burgers",
     slug: "burger",
-    mealType: "lunch",
+    mainCategory: "meals",
+    subType: "lunch",
   },
 
   // ================= DINNER =================
   {
-    id: 5,
+    id: "5",
     title: "Pastas",
     slug: "pasta",
-    mealType: "dinner",
+    mainCategory: "meals",
+    subType: "dinner",
   },
 ];
 
-export const mockMeals: ProductType[] = [
+export const mockMeals: MealProduct[] = [
   // ================= MEALS - BREAKFAST =================
   {
-    id: 5,
+    id: "5",
     slug: "classic-breakfast",
     title: "Classic Breakfast Plate",
     description: "Eggs, toasted bread, olives and cheese.",
-    price: 180,
+    basePrice: 180,
     image: "/customer-favorites/brownie.webp",
     mainCategory: "meals",
-    mealType: "breakfast",
-    category: "plate",
+    mealTime: "breakfast",
+    categoryId: "plate",
     isActive: true,
     createdAt: "2026-02-10",
     isFeatured: true,
@@ -62,15 +66,15 @@ export const mockMeals: ProductType[] = [
     tags: ["traditional"],
   },
   {
-    id: 6,
+    id: "6",
     slug: "avocado-toast",
     title: "Avocado Toast",
     description: "Sourdough bread topped with smashed avocado.",
-    price: 160,
+    basePrice: 160,
     image: "/customer-favorites/brownie.webp",
     mainCategory: "meals",
-    mealType: "breakfast",
-    category: "toast",
+    mealTime: "breakfast",
+    categoryId: "toast",
     isActive: true,
     createdAt: "2026-02-10",
     isNew: true,
@@ -81,15 +85,15 @@ export const mockMeals: ProductType[] = [
 
   // ================= MEALS - LUNCH =================
   {
-    id: 7,
+    id: "7",
     slug: "grilled-chicken-salad",
     title: "Grilled Chicken Salad",
     description: "Fresh greens with grilled chicken breast.",
-    price: 220,
+    basePrice: 220,
     image: "/customer-favorites/brownie.webp",
     mainCategory: "meals",
-    mealType: "lunch",
-    category: "salad",
+    mealTime: "lunch",
+    categoryId: "salad",
     isActive: true,
     createdAt: "2026-02-10",
     isPopular: true,
@@ -98,15 +102,15 @@ export const mockMeals: ProductType[] = [
     tags: ["high-protein"],
   },
   {
-    id: 8,
+    id: "8",
     slug: "beef-burger",
     title: "Beef Burger",
     description: "Juicy beef patty with cheddar cheese.",
-    price: 250,
+    basePrice: 250,
     image: "/customer-favorites/brownie.webp",
     mainCategory: "meals",
-    mealType: "lunch",
-    category: "burger",
+    mealTime: "lunch",
+    categoryId: "burger",
     isActive: true,
     createdAt: "2026-02-10",
     calories: 650,
@@ -116,15 +120,15 @@ export const mockMeals: ProductType[] = [
 
   // ================= MEALS - DINNER =================
   {
-    id: 9,
+    id: "9",
     slug: "alfredo-pasta",
     title: "Chicken Alfredo Pasta",
     description: "Creamy alfredo sauce with grilled chicken.",
-    price: 270,
+    basePrice: 270,
     image: "/customer-favorites/brownie.webp",
     mainCategory: "meals",
-    mealType: "dinner",
-    category: "pasta",
+    mealTime: "dinner",
+    categoryId: "pasta",
     isActive: true,
     createdAt: "2026-02-10",
     isFeatured: true,
@@ -142,13 +146,13 @@ export default async function MealsPage({ searchParams }: MealsPageProps) {
   const { mealType, category } = await searchParams;
   const Meal = mealType || "breakfast";
   const filteredCategories = mockMealsCategories.filter(
-    (cat) => cat.mealType === Meal,
+    (cat) => cat.subType === Meal,
   );
 
-  const selectedCategory = category || filteredCategories[0].slug;
+  const selectedCategory = category || filteredCategories[0]?.slug || "";
 
   const filteredMeals = mockMeals.filter(
-    (meal) => meal.mealType === Meal && meal.category === selectedCategory,
+    (meal) => meal.mealTime === Meal && meal.categoryId === selectedCategory,
   );
   return (
     <div>
