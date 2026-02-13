@@ -165,7 +165,8 @@ export const WIZARD_TOTAL_STEPS = 4;
 // ==================== TYPE INFERENCE ====================
 
 export type MainCategory = z.infer<typeof mainCategoryEnum>;
-export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
+export type CreateCategory = z.infer<typeof createCategorySchema>;
+export type CreateCategoryInput = z.input<typeof createCategorySchema>;
 export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type CreateProductFormInput = z.input<typeof createProductSchema>;
