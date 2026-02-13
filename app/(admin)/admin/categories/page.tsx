@@ -1,10 +1,12 @@
 import ToastHandler from "@/components/ToastHandler";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function AdminCategoriesPage() {
   return (
     <div>
-      <ToastHandler />
+      <Suspense>
+        <ToastHandler />
+      </Suspense>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import StepCategories from "./steps/StepCategories";
 
 export default function ProductAddForm() {
   const searchParams = useSearchParams();
@@ -94,7 +95,7 @@ export default function ProductAddForm() {
       </div>
       <Form {...form}>
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-          {/* {step === 1 && <StepCategories form={form} />} */}
+          {step === 1 && <StepCategories form={form} />}
           <div className="flex justify-between pt-6 border-t">
             <Button
               type="button"
