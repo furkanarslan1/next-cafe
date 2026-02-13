@@ -22,7 +22,7 @@ export default function MenuItems({ items }: MenuItemsProps) {
             className="relative h-20 w-20 shrink-0"
           >
             <Image
-              src={item.image || "/customer-favorites/brownie.webp"}
+              src={item.imageUrl || "/customer-favorites/brownie.webp"}
               alt={item.title || "drink-image"}
               fill
               className="object-contain"
@@ -32,7 +32,7 @@ export default function MenuItems({ items }: MenuItemsProps) {
           <div className="flex flex-col flex-1">
             <div className="flex items-center justify-between w-full">
               <p className="font-bold">{item.title}</p>
-              <p className="text-green-600">${item.basePrice}</p>
+              <p className="text-green-600">${item.price}</p>
             </div>
             {/*  DESC */}
             <p className="text-gray-500">

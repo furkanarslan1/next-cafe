@@ -31,74 +31,60 @@ export type DessertType =
   | "ice-cream"
   | "special";
 
+// Alt tip birlestirme (tum subType degerleri)
+// Sub type union (all subType values)
+export type SubType = DrinkTemperature | MealTime | DessertType;
+
 // Alerjen tipleri (gluten, sut, findik, soya, yumurta)
 // Allergen types (gluten, milk, nuts, soy, egg)
 export type Allergen = "gluten" | "milk" | "nuts" | "soy" | "egg";
 
-// Urun varyant sistemi - boyutlandirma icin (Kucuk, Buyuk vb.)
-// Product variant system - for sizing (Small, Large etc.)
+// Urun varyant tipi (S/M/L, tek/cift shot vb.)
+// Product variant type (S/M/L, single/double shot etc.)
 export interface ProductVariant {
-  id: string;
   name: string;
   price: number;
 }
 
-// Ortak kategori tipi - tum alt kategoriler icin (Coffee, Tea, Salads vb.)
-// Common category type - for all subcategories (Coffee, Tea, Salads etc.)
+// Kategori tipi - DB categories tablosuna karsilik gelir
+// Category type - maps to DB categories table
 export interface CategoryType {
   id: string;
-  title: string;
   slug: string;
+  label: string;
   mainCategory: MainCategory;
-  subType: DrinkTemperature | MealTime | DessertType;
+  subType: SubType;
+  isActive: boolean;
+  createdAt: string;
 }
 
-// Temel urun tipi - tum urunlerin ortak alanlari
-// Base product type - common fields for all products
-interface BaseProduct {
+// Urun tipi - DB products tablosuna karsilik gelir
+// Product type - maps to DB products table
+// mainCategory ve subType product'ta saklanmaz, category join ile alinir
+// mainCategory and subType are not stored on product, fetched via category join
+export interface Product {
   id: string;
   slug: string;
   title: string;
   description?: string;
-  image?: string;
-
-  basePrice?: number;
-  variants?: ProductVariant[];
-
+  imageUrl?: string;
+  price: number;
+  discountRate: number;
+  variants: ProductVariant[];
   categoryId: string;
   isActive: boolean;
-  isFeatured?: boolean;
-  isNew?: boolean;
-  isPopular?: boolean;
-  isOutOfStock?: boolean;
-
+  isFeatured: boolean;
+  isNew: boolean;
+  isPopular: boolean;
+  isOutOfStock: boolean;
   calories?: number;
-  allergens?: Allergen[];
-  tags?: string[];
+  allergens: Allergen[];
+  tags: string[];
   createdAt: string;
 }
 
-// Icecek urunu - sicaklik bilgisi tasir
-// Drink product - carries temperature info
-export interface DrinkProduct extends BaseProduct {
-  mainCategory: "drinks";
-  temperature: DrinkTemperature;
+// Urun + kategori bilgisi (join sonrasi, listeleme icin)
+// Product with category info (after join, for listing)
+export interface ProductWithCategory extends Product {
+  category: CategoryType;
 }
-
-// Yemek urunu - ogun bilgisi tasir
-// Meal product - carries meal time info
-export interface MealProduct extends BaseProduct {
-  mainCategory: "meals";
-  mealTime: MealTime;
-}
-
-// Tatli urunu - tatli turu bilgisi tasir
-// Dessert product - carries dessert type info
-export interface DessertProduct extends BaseProduct {
-  mainCategory: "desserts";
-  dessertType: DessertType;
-}
-
-// Tum urunleri kapsayan birlesik tip (discriminated union)
-// Union type covering all products (discriminated union)
-export type Product = DrinkProduct | MealProduct | DessertProduct;

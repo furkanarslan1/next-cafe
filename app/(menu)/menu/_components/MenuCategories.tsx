@@ -33,7 +33,7 @@ export default function MenuCategories({
               : "bg-stone-200 text-stone-600 hover:bg-stone-300"
           }`}
         >
-          {cat.title}
+          {cat.label}
         </div>
       ))}
     </div>
