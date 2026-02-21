@@ -69,7 +69,11 @@ export default function StepBasicInfos({ form }: StepProps) {
                 type="number"
                 step="0.01"
                 {...field}
-                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                value={field.value ?? ""}
+                onChange={(e) => {
+                  const val = e.target.valueAsNumber;
+                  field.onChange(Number.isNaN(val) ? undefined : val);
+                }}
               />
             </FormControl>
             <FormMessage />
@@ -92,7 +96,11 @@ export default function StepBasicInfos({ form }: StepProps) {
                 max={100}
                 min={0}
                 {...field}
-                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                value={field.value ?? ""}
+                onChange={(e) => {
+                  const val = e.target.valueAsNumber;
+                  field.onChange(Number.isNaN(val) ? undefined : val);
+                }}
               />
             </FormControl>
             <FormMessage />

@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import StepCategories from "./steps/StepCategories";
 import StepBasicInfos from "./steps/StepBasicInfos";
+import StepAttributes from "./steps/StepAttributes";
 
 export default function ProductAddForm() {
   const searchParams = useSearchParams();
@@ -98,6 +99,7 @@ export default function ProductAddForm() {
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {step === 1 && <StepCategories form={form} />}
           {step === 2 && <StepBasicInfos form={form} />}
+          {step === 3 && <StepAttributes form={form} />}
           <div className="flex justify-between pt-6 border-t">
             <Button
               type="button"
