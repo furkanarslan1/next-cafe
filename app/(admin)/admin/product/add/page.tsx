@@ -1,10 +1,12 @@
-import React from "react";
+import { Suspense } from "react";
 import ProductAddForm from "./_components/ProductAddForm";
 
 export default function ProductAddPage() {
   return (
     <div>
-      <ProductAddForm />
+      <Suspense>
+        <ProductAddForm />
+      </Suspense>
     </div>
   );
 }

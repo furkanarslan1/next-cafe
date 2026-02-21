@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import StepCategories from "./steps/StepCategories";
 import StepBasicInfos from "./steps/StepBasicInfos";
 import StepAttributes from "./steps/StepAttributes";
+import StepImage from "./steps/StepImage";
 
 export default function ProductAddForm() {
   const searchParams = useSearchParams();
@@ -55,7 +56,7 @@ export default function ProductAddForm() {
   const onSubmit = async (values: ProductWizardFormInput) => {
     const validationResult = productWizardSchema.safeParse(values);
     if (!validationResult.success) {
-      console.log("Zod Validation Errors:", validationResult.error.format());
+      console.log("Zod Validation Errors:", validationResult.error.issues);
       toast.error("Please check the form for errors.");
       return;
     }
@@ -100,6 +101,7 @@ export default function ProductAddForm() {
           {step === 1 && <StepCategories form={form} />}
           {step === 2 && <StepBasicInfos form={form} />}
           {step === 3 && <StepAttributes form={form} />}
+          {step === 4 && <StepImage form={form} />}
           <div className="flex justify-between pt-6 border-t">
             <Button
               type="button"
