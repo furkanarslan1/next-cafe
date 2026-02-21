@@ -20,12 +20,9 @@ import {
   ProductWizardFormInput,
   subTypeEnumMap,
 } from "@/schemas/menuSchema";
+import { StepProps } from "@/types/stepProps";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-
-interface StepProps {
-  form: UseFormReturn<ProductWizardFormInput>;
-}
 
 interface Category {
   id: string;
