@@ -10,13 +10,15 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import StepCategories from "./steps/StepCategories";
 import StepBasicInfos from "./steps/StepBasicInfos";
 import StepAttributes from "./steps/StepAttributes";
 import StepImage from "./steps/StepImage";
+import { createClient } from "@/lib/supabase/client";
+import { createProduct } from "@/app/(actions)/product/createProduct";
 
 export default function ProductAddForm() {
   const searchParams = useSearchParams();
@@ -56,15 +58,53 @@ export default function ProductAddForm() {
   const onSubmit = async (values: ProductWizardFormInput) => {
     const validationResult = productWizardSchema.safeParse(values);
     if (!validationResult.success) {
-      console.log("Zod Validation Errors:", validationResult.error.issues);
       toast.error("Please check the form for errors.");
       return;
     }
 
-    const cleanValues = validationResult.data;
+    const data = validationResult.data;
     setIsSubmitting(true);
     try {
-      console.log("success", cleanValues);
+      // UX guard: session kontrolü, upload başlamadan önce
+      const supabase = createClient();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+      if (authError || !user) {
+        toast.error("Session expired. Please log in again.");
+        router.push("/login");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", data.image);
+      formData.append("categoryId", data.categoryId);
+      formData.append("title", data.title);
+      formData.append("description", data.description ?? "");
+      formData.append("price", String(data.price));
+      formData.append("discountRate", String(data.discountRate));
+      formData.append("variants", JSON.stringify(data.variants));
+      formData.append("isActive", String(data.isActive));
+      formData.append("isFeatured", String(data.isFeatured));
+      formData.append("isNew", String(data.isNew));
+      formData.append("isPopular", String(data.isPopular));
+      formData.append("isOutOfStock", String(data.isOutOfStock));
+      formData.append("allergens", JSON.stringify(data.allergens));
+      formData.append("tags", JSON.stringify(data.tags));
+      if (data.calories !== undefined) {
+        formData.append("calories", String(data.calories));
+      }
+
+      const result = await createProduct(formData);
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success("Product created successfully.");
+      router.push("/admin/products");
     } finally {
       setIsSubmitting(false);
     }

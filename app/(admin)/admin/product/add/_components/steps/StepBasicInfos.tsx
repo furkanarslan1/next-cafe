@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { StepProps } from "@/types/stepProps";
 import { Plus, Trash2 } from "lucide-react";
-import React from "react";
+
 import { useFieldArray } from "react-hook-form";
 
 export default function StepBasicInfos({ form }: StepProps) {
@@ -123,10 +123,7 @@ export default function StepBasicInfos({ form }: StepProps) {
                     Variant Name
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="e.g Small, Medium, Large"
-                      {...field}
-                    />
+                    <Input placeholder="e.g Small, Medium, Large" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,9 +143,10 @@ export default function StepBasicInfos({ form }: StepProps) {
                       type="number"
                       step="0.01"
                       {...field}
-                      onChange={(e) =>
-                        field.onChange(e.target.valueAsNumber)
-                      }
+                      onChange={(e) => {
+                        const val = e.target.valueAsNumber;
+                        field.onChange(Number.isNaN(val) ? undefined : val);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
