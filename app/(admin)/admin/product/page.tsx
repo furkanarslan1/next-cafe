@@ -1,6 +1,7 @@
 import AdminProductFilter from "./_components/AdminProductFilter";
+import AdminProductList from "./_components/AdminProductList";
 import { createClient } from "@/lib/supabase/server";
-import { CategoryType } from "@/types/menu/MenuTypes";
+import { CategoryType, Product } from "@/types/menu/MenuTypes";
 import { subTypeEnumMap } from "@/schemas/menuSchema";
 
 const CATEGORY_ORDER = ["drinks", "meals", "desserts"] as const;
@@ -65,8 +66,27 @@ export default async function ProductPage({ searchParams }: ProductPageProps) {
       .in("category_id", filteredCategoryIds)
       .order("created_at", { ascending: false });
 
-    products = result.data;
     error = result.error;
+    products = (result.data ?? []).map((p): Product => ({
+      id: p.id,
+      slug: p.slug,
+      title: p.title,
+      description: p.description ?? undefined,
+      imageUrl: p.image_url ?? undefined,
+      price: p.price,
+      discountRate: p.discount_rate,
+      variants: p.variants ?? [],
+      categoryId: p.category_id,
+      isActive: p.is_active,
+      isFeatured: p.is_featured,
+      isNew: p.is_new,
+      isPopular: p.is_popular,
+      isOutOfStock: p.is_out_of_stock,
+      calories: p.calories ?? undefined,
+      allergens: p.allergens ?? [],
+      tags: p.tags ?? [],
+      createdAt: p.created_at,
+    }));
   }
 
   if (error) {
@@ -82,13 +102,7 @@ export default async function ProductPage({ searchParams }: ProductPageProps) {
         selectedMain={selectedMain}
         selectedSub={selectedSub}
       />
-      {products && products.length > 0 ? (
-        <p className="text-sm text-muted-foreground">
-          {products.length} product(s) found
-        </p>
-      ) : (
-        <p className="text-sm text-muted-foreground">No products found.</p>
-      )}
+      <AdminProductList products={products ?? []} />
     </div>
   );
 }

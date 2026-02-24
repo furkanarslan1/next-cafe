@@ -83,6 +83,14 @@ export interface Product {
   createdAt: string;
 }
 
+//PAGINATION
+
+export interface PaginationResult {
+  products: Product[];
+  totalCount: number;
+  totalPages: number;
+}
+
 // Urun + kategori bilgisi (join sonrasi, listeleme icin)
 // Product with category info (after join, for listing)
 export interface ProductWithCategory extends Product {
