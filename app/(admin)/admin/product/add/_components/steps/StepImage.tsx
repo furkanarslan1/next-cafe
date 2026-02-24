@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { StepProps } from "@/types/stepProps";
-import { ImagePlus, Loader2, Trash2 } from "lucide-react";
+import { ImagePlus, Loader2, Pencil, Trash2 } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -23,13 +23,18 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function StepImage({ form }: StepProps) {
+export default function StepImage({ form, existingImageUrl }: StepProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isCompressing, setIsCompressing] = useState(false);
+
+  // Gösterilecek resim: yeni seçildiyse preview, yoksa mevcut Cloudinary URL
+  // The image to display: new preview if selected, otherwise existing Cloudinary URL
+  const displayImage = preview ?? existingImageUrl ?? null;
+  const isExistingImage = !preview && !!existingImageUrl;
 
   const handleFile = async (
     file: File | undefined,
@@ -89,6 +94,8 @@ export default function StepImage({ form }: StepProps) {
     setFileName(null);
     setFileSize(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    // existingImageUrl varsa ona geri dönülür, yoksa upload alanı açılır
+    // If existingImageUrl exists, reverts to it; otherwise shows upload area
   };
 
   return (
@@ -100,27 +107,50 @@ export default function StepImage({ form }: StepProps) {
           <FormItem>
             <FormLabel>Product Image</FormLabel>
             <FormControl>
-              {preview ? (
+              {displayImage ? (
                 <div className="space-y-3">
                   <div className="relative w-full max-w-sm aspect-square rounded-xl overflow-hidden border">
                     <img
-                      src={preview}
+                      src={displayImage}
                       alt="Preview"
                       className="object-cover w-full h-full"
                     />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      className="absolute top-2 right-2"
-                      onClick={() => removeImage(onChange)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    {/* Mevcut resim: değiştir butonu | Yeni resim: sil butonu */}
+                    {/* Existing image: change button | New image: remove button */}
+                    {isExistingImage ? (
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="icon"
+                        className="absolute top-2 right-2"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-2 right-2"
+                        onClick={() => removeImage(onChange)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
-                  {fileName && fileSize && (
+                  {/* Yeni resim seçildiyse boyut bilgisi göster */}
+                  {/* Show file size info only for newly selected images */}
+                  {!isExistingImage && fileName && fileSize && (
                     <p className="text-sm text-muted-foreground max-w-sm truncate">
                       {fileName} ({formatFileSize(fileSize)})
+                    </p>
+                  )}
+                  {/* Mevcut resim gösteriliyorsa bilgi etiketi */}
+                  {/* Info label when showing existing image */}
+                  {isExistingImage && (
+                    <p className="text-sm text-muted-foreground">
+                      Current Image. Click the pencil icon to change it.
                     </p>
                   )}
                 </div>

@@ -21,7 +21,7 @@ import {
   subTypeEnumMap,
 } from "@/schemas/menuSchema";
 import { StepProps } from "@/types/stepProps";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 interface Category {
@@ -36,31 +36,64 @@ export default function StepCategories({ form }: StepProps) {
   const watchMain = form.watch("mainCategory");
   const watchSub = form.watch("subType");
 
+  // null = henüz set edilmedi (ilk render), undefined/string = önceki değer
+  // null = not yet set (first render), undefined/string = previous value
+  const prevMainRef = useRef<string | null | undefined>(null);
+  const prevSubRef = useRef<string | null | undefined>(null);
+
   // mainCategory değişince subType ve categoryId sıfırla
   // Resets subType and categoryId when mainCategory changes
+  // İlk render'da (null) atla — sonraki değişimlerde gerçek değeri karşılaştır
+  // Skip on first render (null) — on subsequent changes compare actual values
   useEffect(() => {
-    form.setValue("subType", "");
-    form.setValue("categoryId", "");
-    setCategories([]);
+    if (prevMainRef.current === null) {
+      prevMainRef.current = watchMain;
+      return;
+    }
+    if (prevMainRef.current !== watchMain) {
+      prevMainRef.current = watchMain;
+      form.setValue("subType", "");
+      form.setValue("categoryId", "");
+      setCategories([]);
+    }
   }, [watchMain]);
 
   // subType değişince categoryId sıfırla ve DB'den kategorileri çek
-  // When subType changes, reset categoryId and retrieve categories from the DB.
+  // When subType changes, reset categoryId and fetch categories from DB
+  // İlk render'da categoryId sıfırlanmaz, sadece kategoriler çekilir
+  // On first render, categoryId is not reset — only categories are fetched
   useEffect(() => {
-    form.setValue("categoryId", "");
-
-    if (!watchMain || !watchSub) {
-      setCategories([]);
+    if (prevSubRef.current === null) {
+      prevSubRef.current = watchSub;
+      if (watchMain && watchSub) {
+        const fetchCategories = async () => {
+          setIsLoading(true);
+          const data = await getByMainSubCategories(watchMain, watchSub);
+          setCategories(data ?? []);
+          setIsLoading(false);
+        };
+        fetchCategories();
+      }
       return;
     }
 
-    const fetchCategories = async () => {
-      setIsLoading(true);
-      const data = await getByMainSubCategories(watchMain, watchSub);
-      setCategories(data ?? []);
-      setIsLoading(false);
-    };
-    fetchCategories();
+    if (prevSubRef.current !== watchSub) {
+      prevSubRef.current = watchSub;
+      form.setValue("categoryId", "");
+
+      if (!watchMain || !watchSub) {
+        setCategories([]);
+        return;
+      }
+
+      const fetchCategories = async () => {
+        setIsLoading(true);
+        const data = await getByMainSubCategories(watchMain, watchSub);
+        setCategories(data ?? []);
+        setIsLoading(false);
+      };
+      fetchCategories();
+    }
   }, [watchSub]);
 
   return (

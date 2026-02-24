@@ -16,6 +16,7 @@ import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface ProductListProps {
   products: Product[];
@@ -114,11 +115,14 @@ export default function AdminProductList({ products }: ProductListProps) {
                 <TableCell>
                   <div className="flex gap-2">
                     <Button
+                      asChild
                       variant="outline"
                       size="icon"
                       className="h-8 w-8 text-blue-500 hover:text-blue-600"
                     >
-                      <Edit className="h-4 w-4" />
+                      <Link href={`/admin/product/${product.id}/edit`}>
+                        <Edit className="h-4 w-4" />
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"

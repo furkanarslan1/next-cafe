@@ -19,8 +19,19 @@ import StepAttributes from "./steps/StepAttributes";
 import StepImage from "./steps/StepImage";
 import { createClient } from "@/lib/supabase/client";
 import { createProduct } from "@/app/(actions)/product/createProduct";
+import { MainCategory, Product, SubType } from "@/types/menu/MenuTypes";
+import { updateProduct } from "@/app/(actions)/product/updateProduct";
 
-export default function ProductAddForm() {
+interface InitialData extends Product {
+  mainCategory: MainCategory;
+  subType: SubType;
+}
+
+interface ProductAddFormProps {
+  initialData?: InitialData;
+}
+
+export default function ProductAddForm({ initialData }: ProductAddFormProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const step = Number(searchParams.get("step")) || 1;
@@ -34,35 +45,61 @@ export default function ProductAddForm() {
 
   const form = useForm<ProductWizardFormInput>({
     resolver: zodResolver(productWizardSchema),
-    defaultValues: {
-      mainCategory: undefined,
-      subType: undefined,
-      categoryId: undefined,
-      title: "",
-      description: "",
-      price: undefined,
-      discountRate: 0,
-      variants: [],
-      image: undefined,
-      isActive: true,
-      isFeatured: false,
-      isNew: false,
-      isPopular: false,
-      isOutOfStock: false,
-      calories: undefined,
-      allergens: [],
-      tags: [],
-    },
+    defaultValues: initialData
+      ? {
+          mainCategory: initialData.mainCategory,
+          subType: initialData.subType,
+          categoryId: initialData.categoryId,
+          title: initialData.title,
+          description: initialData.description ?? "",
+          price: initialData.price,
+          discountRate: initialData.discountRate,
+          variants: initialData.variants,
+          image: undefined, // File olarak pre-populate edilemez
+          isActive: initialData.isActive,
+          isFeatured: initialData.isFeatured,
+          isNew: initialData.isNew,
+          isPopular: initialData.isPopular,
+          isOutOfStock: initialData.isOutOfStock,
+          calories: initialData.calories,
+          allergens: initialData.allergens,
+          tags: initialData.tags,
+        }
+      : {
+          mainCategory: undefined,
+          subType: undefined,
+          categoryId: undefined,
+          title: "",
+          description: "",
+          price: undefined,
+          discountRate: 0,
+          variants: [],
+          image: undefined,
+          isActive: true,
+          isFeatured: false,
+          isNew: false,
+          isPopular: false,
+          isOutOfStock: false,
+          calories: undefined,
+          allergens: [],
+          tags: [],
+        },
   });
 
   const onSubmit = async (values: ProductWizardFormInput) => {
-    const validationResult = productWizardSchema.safeParse(values);
-    if (!validationResult.success) {
-      toast.error("Please check the form for errors.");
-      return;
+    // Add modunda tüm alanları (image dahil) doğrula
+    // Edit modunda image opsiyonel — step bazlı validasyon zaten yapıldı
+    // In add mode, validate all fields including image
+    // In edit mode, image is optional — step-level validation already ran
+    if (!initialData) {
+      const validationResult = productWizardSchema.safeParse(values);
+      if (!validationResult.success) {
+        toast.error("Please check the form for errors.");
+        return;
+      }
     }
 
-    const data = validationResult.data;
+    const data = values;
     setIsSubmitting(true);
     try {
       // UX guard: session kontrolü, upload başlamadan önce
@@ -78,7 +115,10 @@ export default function ProductAddForm() {
       }
 
       const formData = new FormData();
-      formData.append("image", data.image);
+
+      if (data.image instanceof File) {
+        formData.append("image", data.image);
+      }
       formData.append("categoryId", data.categoryId);
       formData.append("title", data.title);
       formData.append("description", data.description ?? "");
@@ -96,15 +136,32 @@ export default function ProductAddForm() {
         formData.append("calories", String(data.calories));
       }
 
-      const result = await createProduct(formData);
+      let result;
+
+      if (initialData) {
+        //edit kısmı mevcut resim bilgilerini geçiyoruz
+        formData.append("existingImageUrl", initialData.imageUrl ?? "");
+        formData.append(
+          "existingImagePublicId",
+          initialData.imagePublicId ?? "",
+        );
+
+        result = await updateProduct(initialData.id, formData);
+      } else {
+        result = await createProduct(formData);
+      }
 
       if (!result.success) {
         toast.error(result.error);
         return;
       }
 
-      toast.success("Product created successfully.");
-      router.push("/admin/products");
+      toast.success(
+        initialData
+          ? "Product updated successfully."
+          : "Product created successfully.",
+      );
+      router.push("/admin/product");
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +171,16 @@ export default function ProductAddForm() {
     const fields = WIZARD_STEP_FIELDS[step];
     if (!fields) return;
 
-    const isValid = await form.trigger(fields);
+    // Edit modunda step 4'te mevcut resim varsa ve yeni resim seçilmediyse image validasyonunu atla — mevcut resim korunuyor
+    //In edit mode on step 4, skip image validation if existing image is kept
+    const fieldsToValidate =
+      step === 4 && initialData?.imageUrl && !form.getValues("image")
+        ? (fields as string[]).filter(
+            (f) => f !== "image",
+          ) as (keyof ProductWizardFormInput)[]
+        : fields;
+
+    const isValid = await form.trigger(fieldsToValidate);
     if (!isValid) return;
 
     if (step < WIZARD_TOTAL_STEPS) {
@@ -141,7 +207,9 @@ export default function ProductAddForm() {
           {step === 1 && <StepCategories form={form} />}
           {step === 2 && <StepBasicInfos form={form} />}
           {step === 3 && <StepAttributes form={form} />}
-          {step === 4 && <StepImage form={form} />}
+          {step === 4 && (
+            <StepImage form={form} existingImageUrl={initialData?.imageUrl} />
+          )}
           <div className="flex justify-between pt-6 border-t">
             <Button
               type="button"
@@ -156,7 +224,13 @@ export default function ProductAddForm() {
                 {isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                <span>{step === 4 ? "Complete and Publish" : "Next Step"}</span>
+                <span>
+                  {step === 4
+                    ? initialData
+                      ? "Save Changes"
+                      : "Complete and Publish"
+                    : "Next Step"}
+                </span>
               </div>
             </Button>
           </div>
