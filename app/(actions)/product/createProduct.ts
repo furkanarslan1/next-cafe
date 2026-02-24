@@ -111,6 +111,7 @@ export async function createProduct(
     title: data.title,
     description: data.description,
     image_url: imageUrl,
+    image_public_id: imagePublicId,
     slug,
     price: data.price,
     discount_rate: data.discountRate,

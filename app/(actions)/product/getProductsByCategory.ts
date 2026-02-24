@@ -36,6 +36,7 @@ export async function getProductsByCategory(
     title: p.title,
     description: p.description ?? undefined,
     imageUrl: p.image_url ?? undefined,
+    imagePublicId: p.image_public_id ?? undefined,
     price: p.price,
     discountRate: p.discount_rate,
     variants: p.variants ?? [],

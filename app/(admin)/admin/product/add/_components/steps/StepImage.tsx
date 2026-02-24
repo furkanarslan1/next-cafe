@@ -49,36 +49,29 @@ export default function StepImage({ form }: StepProps) {
       return;
     }
 
-    // 1MB üstü dosyaları sıkıştır, altındakileri olduğu gibi kullan
-    // Compress files larger than 1MB, use files smaller than 1MB as they are.
     let finalFile = file;
-    if (file.size > 1 * 1024 * 1024) {
-      setIsCompressing(true);
-      try {
-        const compressed = await imageCompression(file, {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        });
-        // Runtime'da Blob dönebilir, schema z.instanceof(File) beklediği
-        // için her zaman File'a çeviriyoruz
-        // A Blob can be returned at runtime, schema z.instanceof(File) is expected
-
-        // We always convert to File
-        finalFile = new File([compressed], file.name, {
-          type: compressed.type,
-        });
-        toast.success(
-          `Compressed: ${formatFileSize(file.size)} → ${formatFileSize(finalFile.size)}`,
-        );
-      } catch {
-        toast.error("Compression failed. Using original file.");
-        finalFile = file;
-      } finally {
-        setIsCompressing(false);
-      }
-    } else {
-      toast.success("Image uploaded successfully.");
+    setIsCompressing(true);
+    try {
+      const compressed = await imageCompression(file, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      });
+      // Runtime'da Blob dönebilir, schema z.instanceof(File) beklediği
+      // için her zaman File'a çeviriyoruz
+      // A Blob can be returned at runtime, schema z.instanceof(File) is expected
+      // We always convert to File
+      finalFile = new File([compressed], file.name, {
+        type: compressed.type,
+      });
+      toast.success(
+        `Optimized: ${formatFileSize(file.size)} → ${formatFileSize(finalFile.size)}`,
+      );
+    } catch {
+      toast.error("Compression failed. Using original file.");
+      finalFile = file;
+    } finally {
+      setIsCompressing(false);
     }
 
     // field.onChange ile React Hook Form'un kendi döngüsüne bağlıyoruz

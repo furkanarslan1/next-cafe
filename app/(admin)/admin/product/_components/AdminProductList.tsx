@@ -10,15 +10,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { deleteProduct } from "@/app/(actions)/product/deleteProduct";
 import { Product } from "@/types/menu/MenuTypes";
 import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ProductListProps {
   products: Product[];
 }
 
 export default function AdminProductList({ products }: ProductListProps) {
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    const isConfirmed = confirm(
+      "Are you sure? This will permanently delete the product and its image.",
+    );
+    if (!isConfirmed) return;
+
+    setDeletingId(id);
+    const loadingToast = toast.loading("Deleting product...");
+
+    try {
+      const result = await deleteProduct(id);
+      toast.dismiss(loadingToast);
+
+      if (result.success) {
+        toast.success("Product deleted successfully.");
+      } else {
+        toast.error(result.error ?? "An error occurred.");
+      }
+    } catch {
+      toast.dismiss(loadingToast);
+      toast.error("An unexpected error occurred.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="rounded-md border bg-white">
       <Table>
@@ -69,7 +100,7 @@ export default function AdminProductList({ products }: ProductListProps) {
 
                 {/* PRICE */}
                 <TableCell className="hidden sm:table-cell">
-                  <span className="font-mono font-bold">${product.price}</span>
+                  <span className="font-mono font-bold">₺{product.price}</span>
                 </TableCell>
 
                 {/* STATUS */}
@@ -92,7 +123,8 @@ export default function AdminProductList({ products }: ProductListProps) {
                     <Button
                       variant="outline"
                       size="icon"
-                      disabled
+                      disabled={deletingId === product.id}
+                      onClick={() => handleDelete(product.id)}
                       className="h-8 w-8 text-red-500 hover:text-red-600"
                     >
                       <Trash2 className="h-4 w-4" />

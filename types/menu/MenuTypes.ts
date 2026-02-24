@@ -68,6 +68,7 @@ export interface Product {
   title: string;
   description?: string;
   imageUrl?: string;
+  imagePublicId?: string;
   price: number;
   discountRate: number;
   variants: ProductVariant[];
