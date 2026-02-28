@@ -6,6 +6,7 @@ import AdminPricesCard from "./_components/AdminPricesCard";
 import { getProductsByCategory } from "@/app/(actions)/product/getProductsByCategory";
 import Pagination from "@/components/Pagination";
 import { Suspense } from "react";
+import BulkPriceUpdateModal from "./_components/BulkPriceUpdateModal";
 
 const CATEGORY_ORDER = ["drinks", "meals", "desserts"] as const;
 
@@ -68,7 +69,10 @@ export default async function AdminPricesPage({
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 mt-10 p-4">
-      <h1 className="text-2xl font-bold text-center">Price Management</h1>
+      <div className="flex flex-col gap-6 ">
+        <h1 className="text-2xl font-bold">Price Management</h1>
+        <BulkPriceUpdateModal categoryIds={filteredCategoryIds} />
+      </div>
 
       <Suspense fallback={null}>
         <AdminProductFilter
