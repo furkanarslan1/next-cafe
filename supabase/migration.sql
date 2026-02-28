@@ -49,8 +49,11 @@ ALTER TABLE products DROP COLUMN IF EXISTS category_slug;
 ALTER TABLE products DROP COLUMN IF EXISTS type_slug;
 
 -- 2c. images (jsonb array) → image_url (text, tek resim)
+--     Supabase Storage'dan Cloudinary'e geçişte image_public_id de eklendi.
+--     image_public_id: Cloudinary'de silme/güncelleme için gerekli olan unique identifier.
 ALTER TABLE products DROP COLUMN IF EXISTS images;
-ALTER TABLE products ADD COLUMN image_url text;
+ALTER TABLE products ADD COLUMN image_url        text;
+ALTER TABLE products ADD COLUMN image_public_id  text;
 
 -- 2d. Schema'daki boolean alanlar (attributes jsonb yerine ayrı kolonlar → sorgulanabilir)
 ALTER TABLE products
