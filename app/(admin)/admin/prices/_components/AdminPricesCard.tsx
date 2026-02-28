@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Product } from "@/types/menu/MenuTypes";
-import { Pencil } from "lucide-react";
+import PricesDialogModal from "./PricesDialogModal";
 
 interface AdminPricesCardProps {
   product: Product;
@@ -36,10 +35,7 @@ export default function AdminPricesCard({ product }: AdminPricesCardProps) {
         </div>
       </div>
 
-      <Button variant="outline" size="sm" className="w-full gap-2">
-        <Pencil className="h-3 w-3" />
-        Edit Price
-      </Button>
+      <PricesDialogModal product={product} />
     </div>
   );
 }
