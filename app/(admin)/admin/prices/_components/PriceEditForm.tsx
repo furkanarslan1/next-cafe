@@ -1,7 +1,9 @@
 "use client";
 
+import { updateProductPrice } from "@/app/(actions)/price/updateProductPrice";
 import { Button } from "@/components/ui/button";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -15,7 +17,8 @@ import {
 } from "@/schemas/priceEditSchema";
 import { Product } from "@/types/menu/MenuTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface PriceEditFormProps {
   product: Product;
@@ -41,7 +44,13 @@ export default function PriceEditForm({
   });
 
   const onSubmit = async (values: PriceEditFormValues) => {
-    onClose();
+    const result = await updateProductPrice(product.id, values);
+    if (result.success) {
+      toast.success("Price updated successfully");
+      onClose();
+    } else {
+      toast.error(result.error ?? "An error acurred.");
+    }
   };
 
   return (
@@ -150,7 +159,7 @@ export default function PriceEditForm({
             Cancel
           </Button>
           <Button type="submit" className="flex-1">
-            Save
+            {form.formState.isSubmitting ? "Saving..." : "Save"}
           </Button>
         </div>
       </form>

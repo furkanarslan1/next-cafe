@@ -29,7 +29,10 @@ export default function PricesDialogModal({ product }: PricesDialogModalProps) {
   const isMobile = useIsMobile();
 
   const trigger = (
-    <Button variant="outline" size="sm" className="w-full gap-2">
+    <Button
+      size="sm"
+      className="w-full gap-2 bg-black text-white hover:opacity-90 cursor-pointer transition-all duration-300"
+    >
       <Pencil className="h-3 w-3" />
       Edit Price
     </Button>
