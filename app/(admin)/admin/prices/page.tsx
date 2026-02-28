@@ -2,6 +2,10 @@ import { CategoryType } from "@/types/menu/MenuTypes";
 import AdminProductFilter from "../product/_components/AdminProductFilter";
 import { createClient } from "@/lib/supabase/server";
 import { subTypeEnumMap } from "@/schemas/menuSchema";
+import AdminPricesCard from "./_components/AdminPricesCard";
+import { getProductsByCategory } from "@/app/(actions)/product/getProductsByCategory";
+import Pagination from "@/components/Pagination";
+import { Suspense } from "react";
 
 const CATEGORY_ORDER = ["drinks", "meals", "desserts"] as const;
 
@@ -56,12 +60,39 @@ export default async function AdminPricesPage({
     .filter((c) => c.mainCategory === selectedMain && c.subType === selectedSub)
     .map((c) => c.id);
 
+  const { products, totalPages } = await getProductsByCategory(
+    filteredCategoryIds,
+    currentPage,
+    12,
+  );
+
   return (
-    <div className="max-w-6xl mx-auto space-y-12 mt-10 p-4">
+    <div className="max-w-6xl mx-auto space-y-6 mt-10 p-4">
       <h1 className="text-2xl font-bold text-center">Price Management</h1>
-      <AdminProductFilter
-        selectedMain={selectedMain}
-        selectedSub={selectedSub}
+
+      <Suspense fallback={null}>
+        <AdminProductFilter
+          selectedMain={selectedMain}
+          selectedSub={selectedSub}
+        />
+      </Suspense>
+
+      {products.length === 0 ? (
+        <p className="text-center text-muted-foreground py-12">
+          No products found in this category.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {products.map((product) => (
+            <AdminPricesCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        searchParams={{ main: selectedMain, sub: selectedSub }}
       />
     </div>
   );
