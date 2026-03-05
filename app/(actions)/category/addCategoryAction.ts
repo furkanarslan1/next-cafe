@@ -23,6 +23,25 @@ export async function addCategoryAction(values: CreateCategoryInput) {
 
   const supabase = await createClient();
 
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { success: false, error: "Unauthorized access." };
+  }
+
+  const { data: adminCheck } = await supabase
+    .from("admin_users")
+    .select("id")
+    .eq("email", user.email)
+    .single();
+
+  if (!adminCheck) {
+    return { success: false, error: "Admin access required." };
+  }
+
   const { error } = await supabase.from("categories").insert({
     label,
     slug,

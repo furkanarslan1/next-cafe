@@ -40,6 +40,16 @@ export async function createProduct(
     return { success: false, error: "Unauthorized access." };
   }
 
+  const { data: adminCheck } = await supabase
+    .from("admin_users")
+    .select("id")
+    .eq("email", user.email)
+    .single();
+
+  if (!adminCheck) {
+    return { success: false, error: "Admin access required." };
+  }
+
   //Dosyayı al ve doğrula
 
   const file = formData.get("image");

@@ -35,6 +35,16 @@ export async function updateProductPrice(
     return { success: false, error: "Unaouthorized access" };
   }
 
+  const { data: adminCheck } = await supabase
+    .from("admin_users")
+    .select("id")
+    .eq("email", user.email)
+    .single();
+
+  if (!adminCheck) {
+    return { success: false, error: "Admin access required." };
+  }
+
   const validated = priceEditSchema.safeParse(values);
   if (!validated.success) {
     const errorMessage = validated.error.issues
