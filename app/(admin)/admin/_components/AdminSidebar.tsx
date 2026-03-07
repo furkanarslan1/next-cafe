@@ -43,7 +43,7 @@ const items = [
   },
   {
     title: "Products",
-    url: "/admin/products",
+    url: "/admin/product",
     icon: Coffee,
   },
   {
