@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import MenuCategories from "../_components/MenuCategories";
 import MenuItems from "../_components/MenuItems";
-import { createClient } from "@/lib/supabase/server";
+
 import { getMenuProductsByCategory } from "@/app/(actions)/product/getMenuProductsByCategory";
-import { CategoryType } from "@/types/menu/MenuTypes";
+
+import { getCategories } from "@/app/(actions)/category/getCategories";
 
 interface DrinkPageProps {
   searchParams: Promise<{ drinkTemperature: string; category: string }>;
@@ -12,23 +13,7 @@ interface DrinkPageProps {
 export default async function DrinksPage({ searchParams }: DrinkPageProps) {
   const { drinkTemperature, category } = await searchParams;
   const temperature = drinkTemperature || "hot";
-
-  const supabase = await createClient();
-
-  const { data: rawCategories } = await supabase
-    .from("categories")
-    .select("id, label, slug, main_category, sub_type, is_active, created_at")
-    .order("label");
-
-  const allCategories: CategoryType[] = (rawCategories ?? []).map((c) => ({
-    id: c.id,
-    label: c.label,
-    slug: c.slug,
-    mainCategory: c.main_category,
-    subType: c.sub_type,
-    isActive: c.is_active ?? true,
-    createdAt: c.created_at ?? "",
-  }));
+  const allCategories = await getCategories();
 
   const filteredCategories = allCategories.filter(
     (cat) => cat.mainCategory === "drinks" && cat.subType === temperature,
@@ -42,8 +27,6 @@ export default async function DrinksPage({ searchParams }: DrinkPageProps) {
     selectedCategoryObj ? [selectedCategoryObj.id] : [],
   );
 
-  console.log("selectedCategoryObj:", selectedCategoryObj);
-  console.log("products:", products);
   return (
     <div>
       <Suspense fallback={<div className="h-20">Loading...</div>}>
