@@ -1,6 +1,7 @@
 import React from "react";
 import AdminSideBar from "./_components/AdminSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "sonner";
 
 export default function AdminLayout({
   children,
@@ -11,6 +12,7 @@ export default function AdminLayout({
         <AdminSideBar />
         <main className="flex-1">{children}</main>
       </SidebarProvider>
+      <Toaster />
     </div>
   );
 }
