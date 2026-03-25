@@ -1,7 +1,6 @@
 import { getHeroSettings } from "@/app/(actions)/menuHero/getHeroSettings";
 import { Instagram } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 interface HeroMenuProps {
@@ -30,16 +29,16 @@ export default async function HeroMenu({ page }: HeroMenuProps) {
             <p className="">Follow Us</p>
             <ul className="flex items-center gap-2">
               <li>
-                <Link href={hero.instagram_url ?? "#"}>
+                <a href={hero.instagram_url ?? "#"} target="_blank" rel="noopener noreferrer">
                   <Instagram className="" />
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
         </div>
       </div>
       {/* TITLE AND DESC */}
-      <div className="absolute inset-0 flex items-center justify-center text-white">
+      <div className="absolute inset-0 flex items-center justify-center text-white pointer-events-none">
         <div className="flex flex-col gap-1">
           <p className="font-bold text-sm">{hero.title}</p>
           <p className="text-xs">{hero.description}</p>
