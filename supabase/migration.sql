@@ -95,3 +95,40 @@ CREATE INDEX idx_products_is_popular   ON products(is_popular);
 -- categories tablosunda main_category + sub_type zaten bu işi görüyor.
 -- İleride ihtiyaç olmazsa kaldırabilirsin:
 -- DROP TABLE IF EXISTS sub_categories;
+
+-- =============================================
+-- 5. HERO SETTINGS TABLOSU
+-- =============================================
+-- page            : global | menu | drinks | meals | desserts
+-- global satırı   : brand_name ve instagram_url (tüm sayfalarda ortak)
+-- diğer satırlar  : her sayfa için ayrı title, description, image_url
+-- image_url       : Cloudinary CDN URL'i
+-- image_public_id : Cloudinary'de silme/güncelleme için kullanılan unique key
+
+CREATE TABLE IF NOT EXISTS hero_settings (
+  id              uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  page            text        NOT NULL UNIQUE,
+  title           text,
+  description     text,
+  image_url       text,
+  image_public_id text,
+  brand_name      text,
+  instagram_url   text,
+  is_active       boolean     NOT NULL DEFAULT true,
+  created_at      timestamptz NOT NULL DEFAULT now(),
+
+  CONSTRAINT chk_hero_settings_page CHECK (
+    page IN ('global', 'menu', 'drinks', 'meals', 'desserts')
+  )
+);
+
+-- Başlangıç verileri
+INSERT INTO hero_settings (page, brand_name, instagram_url)
+  VALUES ('global', 'Next Cafe', '/instagram');
+
+INSERT INTO hero_settings (page, title, description)
+  VALUES
+    ('menu',     'Hoş Geldiniz', 'Menümüzü keşfedin'),
+    ('drinks',   'İçecekler',    'Sıcak ya da soğuk, senin seçimin'),
+    ('meals',    'Yemekler',     'Taze ve lezzetli'),
+    ('desserts', 'Tatlılar',     'Tatlı bir mola');
