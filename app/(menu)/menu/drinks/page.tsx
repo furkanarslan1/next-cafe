@@ -5,6 +5,7 @@ import MenuItems from "../_components/MenuItems";
 import { getMenuProductsByCategory } from "@/app/(actions)/product/getMenuProductsByCategory";
 
 import { getCategories } from "@/app/(actions)/category/getCategories";
+import HeroMenu from "../_components/HeroMenu";
 
 interface DrinkPageProps {
   searchParams: Promise<{ drinkTemperature: string; category: string }>;
@@ -30,6 +31,7 @@ export default async function DrinksPage({ searchParams }: DrinkPageProps) {
   return (
     <div>
       <Suspense fallback={<div className="h-20">Loading...</div>}>
+        <HeroMenu page="drinks" />
         <MenuCategories
           selectedCategory={selectedCategory}
           categories={filteredCategories}

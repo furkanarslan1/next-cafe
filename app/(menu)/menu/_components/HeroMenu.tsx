@@ -1,32 +1,20 @@
+import { getHeroSettings } from "@/app/(actions)/menuHero/getHeroSettings";
 import { Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const heroImage = {
-  heroImg: "/next-cafe-hero.webp",
-  alt: "heroName",
-};
+interface HeroMenuProps {
+  page: string;
+}
 
-const HeroBrand = {
-  brandName: "Next Cafe",
-};
-
-const heroLinks = {
-  instagram: "/instagram",
-};
-
-const p = {
-  title: "Hello customers",
-  desc: "lorem lorem lorem lorem lorem",
-};
-
-export default function HeroMenu() {
+export default async function HeroMenu({ page }: HeroMenuProps) {
+  const hero = await getHeroSettings(page);
   return (
     <div className="relative max-w-5xl mx-auto h-50">
       <Image
-        src={heroImage.heroImg}
-        alt={heroImage.alt}
+        src={hero.image_url ?? "/next-cafe-hero.webp"}
+        alt={hero.title ?? "hero"}
         fill
         className="object-cover object-center"
       />
@@ -35,14 +23,14 @@ export default function HeroMenu() {
         <div className="flex justify-between items-center">
           {/* BRAND */}
           <h1 className="font-extrabold text-amber-300">
-            {HeroBrand.brandName}
+            {hero.brand_name}
           </h1>
           {/* SOCIAL MEDIA */}
           <div className="flex items-center gap-2 text-xs">
             <p className="">Follow Us</p>
             <ul className="flex items-center gap-2">
               <li>
-                <Link href={heroLinks.instagram}>
+                <Link href={hero.instagram_url ?? "#"}>
                   <Instagram className="" />
                 </Link>
               </li>
@@ -53,8 +41,8 @@ export default function HeroMenu() {
       {/* TITLE AND DESC */}
       <div className="absolute inset-0 flex items-center justify-center text-white">
         <div className="flex flex-col gap-1">
-          <p className="font-bold text-sm">{p.title}</p>
-          <p className="text-xs">{p.desc}</p>
+          <p className="font-bold text-sm">{hero.title}</p>
+          <p className="text-xs">{hero.description}</p>
         </div>
       </div>
     </div>

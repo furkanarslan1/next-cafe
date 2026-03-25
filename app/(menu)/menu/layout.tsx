@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
-import Header from "../../(main)/_components/Header";
+
 import MenuNavbar from "./_components/MenuNavbar";
-import HeroMenu from "./_components/HeroMenu";
 
 export default function MenuLayout({
   children,
@@ -10,9 +9,7 @@ export default function MenuLayout({
 }>) {
   return (
     <>
-      <header>
-        <HeroMenu />
-      </header>
+      <header></header>
       <main className="min-h-screen">{children}</main>
 
       <Suspense fallback={null}>

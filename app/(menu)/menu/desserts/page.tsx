@@ -4,6 +4,7 @@ import MenuCategories from "../_components/MenuCategories";
 import MenuItems from "../_components/MenuItems";
 import { getCategories } from "@/app/(actions)/category/getCategories";
 import { getMenuProductsByCategory } from "@/app/(actions)/product/getMenuProductsByCategory";
+import HeroMenu from "../_components/HeroMenu";
 
 interface DessertsPageProps {
   searchParams: Promise<{ category: string; dessertType: string }>;
@@ -30,6 +31,7 @@ export default async function DessertsPage({
   return (
     <div className="  ">
       <Suspense fallback={<div className="h-20">Loading...</div>}>
+        <HeroMenu page="desserts" />
         <MenuCategories
           selectedCategory={selectedCategory}
           categories={filteredCategory}
