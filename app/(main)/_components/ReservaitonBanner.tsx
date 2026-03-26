@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function ReservaitonBanner() {
   return (
@@ -10,6 +11,9 @@ export default function ReservaitonBanner() {
             src="/coffe-image-2.webp"
             alt="reservation-banner-image"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
             className="object-contain"
           />
         </div>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function MenuHero() {
   return (
@@ -8,6 +9,10 @@ export default function MenuHero() {
         src="/next-cafe-hero.webp"
         alt="about-hero-image"
         fill
+        priority
+        sizes="100vw"
+        placeholder="blur"
+        blurDataURL={BLUR_PLACEHOLDER}
         className="object-cover object-bottom"
       />
       <div className="absolute inset-0 bg-black/60"></div>

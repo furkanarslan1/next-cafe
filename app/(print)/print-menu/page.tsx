@@ -1,3 +1,5 @@
+export const revalidate = 518400; // 6 days — keeps Supabase active, revalidated on admin actions via revalidatePath
+
 import { createClient } from "@/lib/supabase/server";
 import { MENU_CONFIG, MainCategoryKey } from "@/config/menuConfig";
 import { CategoryType, Product } from "@/types/menu/MenuTypes";

@@ -1,7 +1,10 @@
+export const revalidate = 518400; // 6 days — keeps Supabase active, revalidated on admin actions via revalidatePath
+
 import { getProductBySlug } from "@/app/(actions)/product/getProductBySlug";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
+
 
 function applyDiscount(price: number, rate: number) {
   if (rate <= 0) return null;
@@ -27,6 +30,10 @@ export default async function ProductDetailPage({
           src={product.imageUrl || "/next-cafe-hero.webp"}
           alt={product.title}
           fill
+          priority
+          sizes="(max-width: 896px) 100vw, 896px"
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
           className="object-contain"
         />
       </div>

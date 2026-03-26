@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function AboutHero() {
   return (
@@ -8,6 +9,10 @@ export default function AboutHero() {
         src="/cafe-gallery/g-5.webp"
         alt="about-hero-image"
         fill
+        priority
+        sizes="100vw"
+        placeholder="blur"
+        blurDataURL={BLUR_PLACEHOLDER}
         className="object-cover"
       />
       <div className="absolute inset-0 bg-black/60"></div>

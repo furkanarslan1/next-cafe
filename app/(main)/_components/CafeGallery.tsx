@@ -23,6 +23,7 @@ function GalleryImage({ src, alt }: { src: string; alt: string }) {
         src={src}
         alt={alt}
         fill
+        sizes="(max-width: 768px) 50vw, 33vw"
         className={`object-cover transition-all duration-500 group-hover:scale-110 ${
           loaded ? "opacity-100" : "opacity-0"
         }`}

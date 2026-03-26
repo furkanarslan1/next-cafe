@@ -1,3 +1,5 @@
+export const revalidate = 518400; // 6 days — keeps Supabase active, revalidated on admin actions via revalidatePath
+
 import MenuMainCategory from "./_components/MenuMainCategory";
 import MenuHero from "./_components/MenuHero";
 

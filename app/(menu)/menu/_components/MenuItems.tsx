@@ -3,6 +3,7 @@ import { Product } from "@/types/menu/MenuTypes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 interface MenuItemsProps {
   items: Product[];
@@ -30,6 +31,9 @@ export default function MenuItems({ items }: MenuItemsProps) {
               src={item.imageUrl || "/customer-favorites/brownie.webp"}
               alt={item.title || "drink-image"}
               fill
+              sizes="80px"
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
               className="object-contain"
             />
           </Link>

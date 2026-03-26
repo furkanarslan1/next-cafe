@@ -181,6 +181,7 @@ export default async function AdminPage() {
                       src={p.image_url || "/mocha.webp"}
                       alt={p.title}
                       fill
+                      sizes="36px"
                       className="object-cover"
                     />
                   </div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function AboutStory() {
   return (
@@ -9,6 +10,9 @@ export default function AboutStory() {
             src="/cafe-gallery/g-6.webp"
             alt="about-description-image"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
             className="object-cover z-10 rounded-2xl shadow-2xl rotate-2"
           />
           <div className="absolute left-5 md:left-10 h-full w-full bg-stone-500 -rotate-2 "></div>

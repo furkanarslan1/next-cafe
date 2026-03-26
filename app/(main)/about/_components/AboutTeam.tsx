@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function AboutTeam() {
   return (
@@ -10,6 +11,9 @@ export default function AboutTeam() {
             src="/about/barista.webp"
             alt="about-description-image"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
             className="object-cover rounded-2xl shadow-2xl -rotate-2 z-10"
           />
           <div className="absolute left-5 md:left-10 h-full w-full bg-stone-600 rotate-2 "></div>

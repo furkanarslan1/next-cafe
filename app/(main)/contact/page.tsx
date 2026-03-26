@@ -1,3 +1,5 @@
+export const revalidate = 518400; // 6 days — keeps Supabase active, revalidated on admin actions via revalidatePath
+
 import React from "react";
 import ContactHero from "./_components/ContactHero";
 import HomeContact from "../_components/HomeContact";

@@ -48,6 +48,7 @@ export default function ActiveList({ products }: ActiveListProps) {
               src={product.imageUrl || "/mocha.webp"}
               alt={product.title}
               fill
+              sizes="44px"
               className={`object-cover ${!product.isActive ? "opacity-40" : ""}`}
             />
           </div>

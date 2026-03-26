@@ -80,8 +80,9 @@ export default function HeroForm({ page, defaultValues }: HeroFormProps) {
     setIsCompressing(true);
     try {
       const compressed = await imageCompression(file, {
-        maxSizeMB: 1,
+        maxSizeMB: 0.5,
         maxWidthOrHeight: 1200,
+        initialQuality: 0.85,
         useWebWorker: true,
       });
       finalFile = new File([compressed], file.name, { type: compressed.type });

@@ -2,6 +2,7 @@ import { getHeroSettings } from "@/app/(actions)/menuHero/getHeroSettings";
 import { Instagram } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 interface HeroMenuProps {
   page: string;
@@ -15,6 +16,10 @@ export default async function HeroMenu({ page }: HeroMenuProps) {
         src={hero.image_url ?? "/next-cafe-hero.webp"}
         alt={hero.title ?? "hero"}
         fill
+        priority
+        sizes="(max-width: 1024px) 100vw, 1024px"
+        placeholder="blur"
+        blurDataURL={BLUR_PLACEHOLDER}
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-black/40"></div>

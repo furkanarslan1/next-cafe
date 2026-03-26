@@ -70,6 +70,7 @@ export default function AdminProductList({ products }: ProductListProps) {
                       src={product.imageUrl || "/mocha.webp"}
                       alt={product.title}
                       fill
+                      sizes="48px"
                       className="object-cover"
                     />
                   </div>

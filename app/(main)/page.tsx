@@ -1,3 +1,5 @@
+export const revalidate = 518400; // 6 days — keeps Supabase active, revalidated on admin actions via revalidatePath
+
 import CafeGallery from "./_components/CafeGallery";
 import CustomerFavorites from "./_components/CustomerFavorites";
 import HomeAbout from "./_components/HomeAbout";

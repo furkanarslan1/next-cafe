@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 import {
   Coffee,
   UtensilsCrossed,
@@ -30,6 +31,9 @@ export default function HomeHero() {
         alt="Next Cafe interior"
         fill
         priority
+        sizes="100vw"
+        placeholder="blur"
+        blurDataURL={BLUR_PLACEHOLDER}
         className="object-cover"
       />
 

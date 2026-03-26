@@ -58,8 +58,9 @@ export default function StepImage({ form, existingImageUrl }: StepProps) {
     setIsCompressing(true);
     try {
       const compressed = await imageCompression(file, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1200,
+        maxSizeMB: 0.3,
+        maxWidthOrHeight: 800,
+        initialQuality: 0.8,
         useWebWorker: true,
       });
       // Runtime'da Blob dönebilir, schema z.instanceof(File) beklediği
