@@ -142,8 +142,8 @@ export async function createProduct(
     return { success: false, error: dbError.message };
   }
 
-  revalidatePath("/admin/products");
-  revalidatePath("/menu");
+  revalidatePath("/admin/product");
+  revalidatePath("/menu", "layout");
 
   return { success: true };
 }

@@ -54,5 +54,6 @@ export async function addCategoryAction(values: CreateCategoryInput) {
   }
 
   revalidatePath("/admin/categories");
+  revalidatePath("/menu", "layout");
   return { success: true };
 }

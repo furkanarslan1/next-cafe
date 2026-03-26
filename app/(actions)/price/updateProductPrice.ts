@@ -66,7 +66,7 @@ export async function updateProductPrice(
   }
 
   revalidatePath("/admin/prices");
-  revalidatePath("/menu");
+  revalidatePath("/menu", "layout");
 
   return { success: true };
 }

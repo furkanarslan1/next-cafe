@@ -71,7 +71,7 @@ export async function deleteProduct(
   }
 
   revalidatePath("/admin/product");
-  revalidatePath("/menu");
+  revalidatePath("/menu", "layout");
 
   return { success: true };
 }

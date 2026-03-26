@@ -168,7 +168,7 @@ export async function updateProduct(
   }
 
   revalidatePath("/admin/product");
-  revalidatePath("/menu");
+  revalidatePath("/menu", "layout");
 
   return { success: true };
 }

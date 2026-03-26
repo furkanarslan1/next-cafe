@@ -32,5 +32,6 @@ export async function deleteCategoryAction(id: string) {
   }
 
   revalidatePath("/admin/categories");
+  revalidatePath("/menu", "layout");
   return { success: true };
 }

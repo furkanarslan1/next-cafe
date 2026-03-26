@@ -29,6 +29,7 @@ import {
   FolderOpen,
   DollarSign,
   LogOut,
+  QrCode,
 } from "lucide-react";
 import { signOutAction } from "@/app/(actions)/auth/signOutAction";
 import {
@@ -44,6 +45,7 @@ const items = [
     group: "General",
     links: [
       { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+      { title: "QR Code", url: "/admin/qr-code", icon: QrCode },
       { title: "Back to Site", url: "/", icon: Home },
     ],
   },

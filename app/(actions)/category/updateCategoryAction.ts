@@ -56,5 +56,6 @@ export async function updateCategoryAction(
   }
 
   revalidatePath("/admin/categories");
+  revalidatePath("/menu", "layout");
   return { success: true };
 }

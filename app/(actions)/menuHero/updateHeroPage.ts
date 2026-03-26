@@ -85,8 +85,8 @@ export async function updateHeroPage(
     await deleteFromCloudinary(existingImagePublicId);
   }
 
-  revalidatePath(`/menu/${page}`);
-  revalidatePath("/admin/heroSettings");
+  revalidatePath(`/menu/${page}`, "layout");
+  revalidatePath("/admin/heroSettings", "layout");
 
   return { success: true };
 }
