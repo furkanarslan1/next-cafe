@@ -62,11 +62,11 @@ export const updateCategorySchema = categoryBaseSchema.partial();
 // Step wizard: mainCategory → subType → category secimi → urun bilgileri → resim
 // Create product - slug is auto-generated from title (slugify)
 // mainCategory and subType are not stored on product, derived from category
-export const createProductSchema = z.object({
+const productBaseSchema = z.object({
   categoryId: z.string().uuid("Invalid category ID"),
   title: z.string().min(1, "Product title is required"),
   description: z.string().optional(),
-  price: z.number().positive("Price must be greater than 0"),
+  price: z.number().min(0).default(0),
   discountRate: z.number().int().min(0).max(100).default(0),
   variants: z.array(productVariantSchema).default([]),
   image: z
@@ -90,9 +90,24 @@ export const createProductSchema = z.object({
   tags: z.array(z.string()).default([]),
 });
 
+const priceOrVariantRefine = (
+  data: { price: number; variants: { name: string; price: number }[] },
+  ctx: z.RefinementCtx,
+) => {
+  if (data.price === 0 && data.variants.length === 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Either a base price or at least one variant with a price is required",
+      path: ["price"],
+    });
+  }
+};
+
+export const createProductSchema = productBaseSchema.superRefine(priceOrVariantRefine);
+
 // Urun guncelleme (tum alanlar opsiyonel)
 // Update product (all fields optional)
-export const updateProductSchema = createProductSchema.partial();
+export const updateProductSchema = productBaseSchema.partial();
 
 // ==================== WIZARD SEMASI ====================
 // ==================== WIZARD SCHEMA ====================
@@ -112,7 +127,7 @@ export const productWizardSchema = z.object({
   categoryId: z.string().uuid("Invalid category ID"),
   title: z.string().min(1, "Product title is required"),
   description: z.string().optional(),
-  price: z.number().positive("Price must be greater than 0"),
+  price: z.number().min(0).default(0),
   discountRate: z.number().int().min(0).max(100).default(0),
   variants: z.array(productVariantSchema).default([]),
   image: z
@@ -134,7 +149,7 @@ export const productWizardSchema = z.object({
     .optional(),
   allergens: z.array(allergenEnum).default([]),
   tags: z.array(z.string()).default([]),
-});
+}).superRefine(priceOrVariantRefine);
 
 // Her step'te hangi alanlar validate edilecek
 // Step 1: Kategori secimi (cascading: mainCategory → subType → categoryId)

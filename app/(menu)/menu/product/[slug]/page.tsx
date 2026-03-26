@@ -25,7 +25,7 @@ export default async function ProductDetailPage({
           className="object-contain"
         />
       </div>
-      <div className="space-y-2">
+      <div className="border border-stone-200 rounded-2xl shadow-md p-5 space-y-2">
         <div className="space-y-4">
           {/* BADGES */}
           <div className="flex gap-2">
@@ -46,52 +46,76 @@ export default async function ProductDetailPage({
             )}
           </div>
 
-          <div className="spacey-2">
+          <div className="space-y-2">
             {/* TITLE */}
-            <h1 className="font-bold text-2xl ">{product.title}</h1>
+            <h1 className="font-bold text-2xl">{product.title}</h1>
             {/* PRICE */}
-            <p className="font-bold text-green-600">${product.price}</p>
+            {product.price > 0 && (
+              <p className="font-bold text-green-600">${product.price}</p>
+            )}
+            {/* VARIANTS */}
+            {product.variants.length > 0 && (
+              <div className="flex flex-wrap gap-3 ">
+                {product.variants.map((variant) => (
+                  <div
+                    key={variant.name}
+                    className="flex items-center gap-1.5 border border-stone-200 rounded-lg px-2 py-1.5 "
+                  >
+                    <span className="text-sm text-muted-foreground">
+                      {variant.name}
+                    </span>
+                    <span className="text-sm font-bold text-green-600">
+                      ${variant.price}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
             {/* DESC */}
-            <p className="text-xs">{product.description}</p>
+            <p className="text-xs text-gray-600">{product.description}</p>
           </div>
         </div>
-        <div className="space-y-1">
-          <p className="text-sm  ">
+        <div className="space-y-3 pt-2 border-t border-stone-100">
+          <p className="text-sm">
             <span className="font-bold">Category: </span>
             {product.category.label}
           </p>
-          <p className="text-sm">
-            <span className="font-bold">Calories:</span> {product.calories}
-          </p>
-          {/* Allergens */}
-          <div className="text-sm flex items-center gap-2">
-            <span className="font-bold">Allergens:</span>
-            <div className="flex flex-wrap gap-2 mt-1">
-              {product.allergens?.map((allergen, i) => (
-                <span
-                  key={i}
-                  className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-1 rounded-full"
-                >
-                  {allergen}
-                </span>
-              ))}
+          {product.calories != null && (
+            <p className="text-sm">
+              <span className="font-bold">Calories: </span>
+              {product.calories} kcal
+            </p>
+          )}
+          {product.allergens.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-sm font-bold">Allergens:</p>
+              <div className="flex flex-wrap gap-1.5">
+                {product.allergens.map((allergen) => (
+                  <span
+                    key={allergen}
+                    className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-1 rounded-full"
+                  >
+                    {allergen}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Tags */}
-          <div className="text-sm flex items-center gap-2">
-            <span className="font-bold">Tags:</span>
-            <div className="flex flex-wrap gap-2 mt-1">
-              {product.tags?.map((tag, i) => (
-                <span
-                  key={i}
-                  className="bg-stone-800 text-white text-xs font-medium px-2.5 py-1 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+          )}
+          {product.tags.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-sm font-bold">Tags:</p>
+              <div className="flex flex-wrap gap-1.5">
+                {product.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-stone-800 text-white text-xs font-medium px-2.5 py-1 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
