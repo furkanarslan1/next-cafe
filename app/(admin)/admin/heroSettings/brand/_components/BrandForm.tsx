@@ -19,13 +19,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function BrandForm() {
+interface BrandFormProps {
+  defaultBrandName: string;
+}
+
+export default function BrandForm({ defaultBrandName }: BrandFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<BrandNameInput>({
     resolver: zodResolver(brandSchema),
     defaultValues: {
-      brand_name: "",
+      brand_name: defaultBrandName,
     },
   });
 

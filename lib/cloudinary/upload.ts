@@ -5,7 +5,10 @@ type UploadResult = {
   publicId: string;
 };
 
-export async function uploadToCloudinary(file: File): Promise<UploadResult> {
+export async function uploadToCloudinary(
+  file: File,
+  folder: string = "cafe/products",
+): Promise<UploadResult> {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
@@ -13,7 +16,7 @@ export async function uploadToCloudinary(file: File): Promise<UploadResult> {
     cloudinary.uploader
       .upload_stream(
         {
-          folder: "cafe/products",
+          folder,
           allowed_formats: ["jpg", "jpeg", "png", "webp"],
           transformation: [{ quality: "auto", fetch_format: "auto" }],
         },

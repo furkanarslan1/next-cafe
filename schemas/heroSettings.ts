@@ -7,4 +7,18 @@ export const brandSchema = z.object({
     .max(30, "Brand name must be a maximum of 30 characters."),
 });
 
-export type BrandNameInput = z.input<typeof brandSchema>;
+export type BrandNameInput = z.infer<typeof brandSchema>;
+
+export const heroPageSchema = z.object({
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 characters.")
+    .max(60, "Title must be a maximum of 60 characters."),
+  description: z
+    .string()
+    .max(120, "Description must be a maximum of 120 characters.")
+    .optional(),
+  image: z.instanceof(File).optional(),
+});
+
+export type HeroPageInput = z.infer<typeof heroPageSchema>;

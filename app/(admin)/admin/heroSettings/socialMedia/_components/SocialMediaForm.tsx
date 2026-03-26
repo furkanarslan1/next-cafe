@@ -20,13 +20,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function SocialMediaForm() {
+interface SocialMediaFormProps {
+  defaultInstagramUrl: string;
+}
+
+export default function SocialMediaForm({ defaultInstagramUrl }: SocialMediaFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<InstagramUrlInput>({
     resolver: zodResolver(instagramUrlSchema),
     defaultValues: {
-      instagram_url: "",
+      instagram_url: defaultInstagramUrl,
     },
   });
 

@@ -19,14 +19,18 @@ import Link from "next/link";
 import {
   Home,
   LayoutDashboard,
-  Users,
   PlusCircle,
-  Settings,
   Image as ImageIcon,
   User2,
   ChevronUp,
   Coffee,
+  Tag,
+  Instagram,
+  FolderOpen,
+  DollarSign,
+  LogOut,
 } from "lucide-react";
+import { signOutAction } from "@/app/(actions)/auth/signOutAction";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,35 +41,30 @@ import { usePathname } from "next/navigation";
 
 const items = [
   {
-    title: "Dashboard",
-    url: "/admin",
-    icon: LayoutDashboard,
+    group: "General",
+    links: [
+      { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+      { title: "Back to Site", url: "/", icon: Home },
+    ],
   },
   {
-    title: "Products",
-    url: "/admin/product",
-    icon: Coffee,
+    group: "Products",
+    links: [
+      { title: "All Products", url: "/admin/product", icon: Coffee },
+      { title: "Add Product", url: "/admin/product/add", icon: PlusCircle },
+      { title: "Categories", url: "/admin/categories", icon: FolderOpen },
+      { title: "Prices", url: "/admin/prices", icon: DollarSign },
+    ],
   },
   {
-    title: "Add Product",
-    url: "/admin/product/add",
-    icon: PlusCircle,
-  },
-
-  //   {
-  //     title: "Users",
-  //     url: "/admin/users",
-  //     icon: Users,
-  //   },
-  //   {
-  //     title: "Settings",
-  //     url: "/admin/settings",
-  //     icon: Settings,
-  //   },
-  {
-    title: "Back to Site",
-    url: "/",
-    icon: Home,
+    group: "Hero Settings",
+    links: [
+      { title: "Brand Name", url: "/admin/heroSettings/brand", icon: Tag },
+      { title: "Social Media", url: "/admin/heroSettings/socialMedia", icon: Instagram },
+      { title: "Drinks Hero", url: "/admin/heroSettings/drinks", icon: ImageIcon },
+      { title: "Meals Hero", url: "/admin/heroSettings/meals", icon: ImageIcon },
+      { title: "Desserts Hero", url: "/admin/heroSettings/desserts", icon: ImageIcon },
+    ],
   },
 ];
 
@@ -84,32 +83,34 @@ export default function AdminSideBar() {
       </SidebarHeader>
       <SidebarSeparator />
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => {
-                const isActive = pathname === item.url;
-                return (
-                  <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      tooltip={item.title}
-                    >
-                      <Link href={item.url}>
-                        <item.icon
-                          className={isActive ? "text-amber-600" : ""}
-                        />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {items.map((group) => (
+          <SidebarGroup key={group.group}>
+            <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.links.map((item) => {
+                  const isActive = pathname === item.url;
+                  return (
+                    <SidebarMenuItem key={item.url}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive}
+                        tooltip={item.title}
+                      >
+                        <Link href={item.url}>
+                          <item.icon
+                            className={isActive ? "text-amber-600" : ""}
+                          />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -125,9 +126,13 @@ export default function AdminSideBar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" id="admin-sidebar-content">
-                <DropdownMenuItem>Account</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Sign out</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-red-500 cursor-pointer"
+                  onClick={() => signOutAction()}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
