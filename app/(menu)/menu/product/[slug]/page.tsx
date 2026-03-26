@@ -3,6 +3,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 
+function applyDiscount(price: number, rate: number) {
+  if (rate <= 0) return null;
+  return Math.round(price * (1 - rate / 100) * 100) / 100;
+}
+
 interface ProductDetailPageProps {
   params: Promise<{
     slug: string;
@@ -50,25 +55,44 @@ export default async function ProductDetailPage({
             {/* TITLE */}
             <h1 className="font-bold text-2xl">{product.title}</h1>
             {/* PRICE */}
-            {product.price > 0 && (
-              <p className="font-bold text-green-600">${product.price}</p>
-            )}
+            {product.price > 0 && (() => {
+              const discounted = applyDiscount(product.price, product.discountRate);
+              return discounted ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm line-through text-gray-400">${product.price}</span>
+                  <span className="font-bold text-green-600 text-lg">${discounted}</span>
+                  <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-medium">
+                    -{product.discountRate}%
+                  </span>
+                </div>
+              ) : (
+                <p className="font-bold text-green-600">${product.price}</p>
+              );
+            })()}
             {/* VARIANTS */}
             {product.variants.length > 0 && (
-              <div className="flex flex-wrap gap-3 ">
-                {product.variants.map((variant) => (
-                  <div
-                    key={variant.name}
-                    className="flex items-center gap-1.5 border border-stone-200 rounded-lg px-2 py-1.5 "
-                  >
-                    <span className="text-sm text-muted-foreground">
-                      {variant.name}
-                    </span>
-                    <span className="text-sm font-bold text-green-600">
-                      ${variant.price}
-                    </span>
-                  </div>
-                ))}
+              <div className="flex flex-wrap gap-3">
+                {product.variants.map((variant) => {
+                  const discounted = applyDiscount(variant.price, product.discountRate);
+                  return (
+                    <div
+                      key={variant.name}
+                      className="flex items-center gap-1.5 border border-stone-200 rounded-lg px-2 py-1.5"
+                    >
+                      <span className="text-sm text-muted-foreground">
+                        {variant.name}
+                      </span>
+                      {discounted ? (
+                        <>
+                          <span className="text-xs line-through text-gray-400">${variant.price}</span>
+                          <span className="text-sm font-bold text-green-600">${discounted}</span>
+                        </>
+                      ) : (
+                        <span className="text-sm font-bold text-green-600">${variant.price}</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
             {/* DESC */}

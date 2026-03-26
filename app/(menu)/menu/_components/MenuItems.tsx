@@ -8,6 +8,11 @@ interface MenuItemsProps {
   items: Product[];
 }
 
+function applyDiscount(price: number, rate: number) {
+  if (rate <= 0) return null;
+  return Math.round(price * (1 - rate / 100) * 100) / 100;
+}
+
 export default function MenuItems({ items }: MenuItemsProps) {
   return (
     <div className="text-xs md:sm p-4 max-w-5xl mx-auto">
@@ -33,19 +38,37 @@ export default function MenuItems({ items }: MenuItemsProps) {
           <div className="flex flex-col flex-1">
             <div className="flex items-center justify-between w-full">
               <p className="font-bold">{item.title}</p>
-              {item.price > 0 && (
-                <p className="text-green-600 font-extrabold">${item.price}</p>
-              )}
+              {item.price > 0 && (() => {
+                const discounted = applyDiscount(item.price, item.discountRate);
+                return discounted ? (
+                  <span className="flex items-center gap-1">
+                    <span className="text-[10px] line-through text-gray-400">${item.price}</span>
+                    <span className="text-green-600 font-extrabold">${discounted}</span>
+                  </span>
+                ) : (
+                  <span className="text-green-600 font-extrabold">${item.price}</span>
+                );
+              })()}
             </div>
             {/* VARIANTS */}
             {item.variants.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-0.5">
-                {item.variants.map((variant) => (
-                  <div key={variant.name} className="flex items-center gap-1">
-                    <span className="text-muted-foreground">{variant.name}</span>
-                    <span className="font-semibold text-green-600">${variant.price}</span>
-                  </div>
-                ))}
+                {item.variants.map((variant) => {
+                  const discounted = applyDiscount(variant.price, item.discountRate);
+                  return (
+                    <div key={variant.name} className="flex items-center gap-1">
+                      <span className="text-muted-foreground">{variant.name}</span>
+                      {discounted ? (
+                        <>
+                          <span className="text-[10px] line-through text-gray-400">${variant.price}</span>
+                          <span className="font-semibold text-green-600">${discounted}</span>
+                        </>
+                      ) : (
+                        <span className="font-semibold text-green-600">${variant.price}</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
             {/*  DESC */}

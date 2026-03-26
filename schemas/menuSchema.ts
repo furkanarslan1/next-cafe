@@ -1,18 +1,14 @@
 import { z } from "zod";
+import { MAIN_CATEGORIES, getSubTypeValues } from "@/config/menuConfig";
 
 // ==================== ENUM SEMALARI ====================
 // ==================== ENUM SCHEMAS ====================
+// Derived from config/menuConfig.ts — do NOT hardcode values here
 
-export const mainCategoryEnum = z.enum(["drinks", "meals", "desserts"]);
-export const drinkTemperatureEnum = z.enum(["hot", "cold"]);
-export const mealTimeEnum = z.enum(["breakfast", "lunch", "dinner"]);
-export const dessertTypeEnum = z.enum([
-  "cake",
-  "pastry",
-  "cookie",
-  "ice-cream",
-  "special",
-]);
+export const mainCategoryEnum = z.enum(
+  MAIN_CATEGORIES as [string, ...string[]],
+);
+
 const allergenEnum = z.enum(["gluten", "milk", "nuts", "soy", "egg"]);
 
 // Urun varyanti (S/M/L, tek/cift shot vb.)
@@ -22,13 +18,14 @@ const productVariantSchema = z.object({
   price: z.number().positive("Price must be greater than 0"),
 });
 
-// mainCategory'ye gore gecerli subType enum'unu doner
-// Returns the valid subType enum for the given mainCategory
-export const subTypeEnumMap = {
-  drinks: drinkTemperatureEnum,
-  meals: mealTimeEnum,
-  desserts: dessertTypeEnum,
-} as const;
+// mainCategory'ye gore gecerli subType degerlerini doner (config'den turetilir)
+// Returns valid subType values for a given mainCategory (derived from config)
+export const subTypeEnumMap = Object.fromEntries(
+  MAIN_CATEGORIES.map((main) => {
+    const values = getSubTypeValues(main) as [string, ...string[]];
+    return [main, z.enum(values)];
+  }),
+) as Record<string, z.ZodEnum<[string, ...string[]]>>;
 
 // ==================== KATEGORI SEMALARI ====================
 // ==================== CATEGORY SCHEMAS ====================

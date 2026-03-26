@@ -1,11 +1,13 @@
 "use client";
 
+import { MENU_CONFIG, getDefaultSubType, MainCategoryKey } from "@/config/menuConfig";
 import { Menu } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-type NavItem = {
-  feature: string;
-  label: string;
+const PATHNAME_PARAM_MAP: Record<string, { key: MainCategoryKey; param: string }> = {
+  "/drinks": { key: "drinks", param: "drinkTemperature" },
+  "/meals": { key: "meals", param: "mealType" },
+  "/desserts": { key: "desserts", param: "dessertType" },
 };
 
 export default function MenuNavbar() {
@@ -13,40 +15,20 @@ export default function MenuNavbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const getNavItems = (): NavItem[] => {
-    if (pathname.includes("/drinks")) {
-      return [
-        { feature: "hot", label: "Hot" },
-        { feature: "cold", label: "Cold" },
-      ];
-    }
-    if (pathname.includes("/meals")) {
-      return [
-        { feature: "breakfast", label: "Breakfast" },
-        { feature: "lunch", label: "Lunch" },
-        { feature: "dinner", label: "Dinner" },
-      ];
-    }
-    if (pathname.includes("/desserts")) {
-      return [
-        { feature: "cake", label: "Cake" },
-        { feature: "pastry", label: "Pastry" },
-        { feature: "cookie", label: "Cookie" },
-        { feature: "ice-cream", label: "Ice Cream" },
-        { feature: "special", label: "Special" },
-      ];
-    }
-    return [];
+  const currentEntry = Object.entries(PATHNAME_PARAM_MAP).find(([segment]) =>
+    pathname.includes(segment),
+  );
+
+  const getNavItems = () => {
+    if (!currentEntry) return [];
+    const { key } = currentEntry[1];
+    return MENU_CONFIG[key].subTypes;
   };
 
   const getActiveFeature = (): string => {
-    if (pathname.includes("/drinks"))
-      return searchParams.get("drinkTemperature") || "hot";
-    if (pathname.includes("/meals"))
-      return searchParams.get("mealType") || "breakfast";
-    if (pathname.includes("/desserts"))
-      return searchParams.get("dessertType") || "cake";
-    return "";
+    if (!currentEntry) return "";
+    const { key, param } = currentEntry[1];
+    return searchParams.get(param) || getDefaultSubType(key);
   };
 
   const handleChange = (value: string) => {
@@ -76,10 +58,10 @@ export default function MenuNavbar() {
         </button>
         {items.map((item) => (
           <button
-            key={item.feature}
-            onClick={() => handleChange(item.feature)}
+            key={item.value}
+            onClick={() => handleChange(item.value)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-              activeFeature === item.feature
+              activeFeature === item.value
                 ? "border border-white/60 shadow-[0_0_8px_rgba(255,255,255,0.4)] bg-white/10"
                 : "opacity-70 hover:opacity-100"
             }`}
