@@ -19,10 +19,9 @@ export default function MenuItems({ items }: MenuItemsProps) {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex items-center justify-center gap-2 border-b border-stone-200"
+          className={`flex items-center justify-center gap-2 border-b border-stone-200 ${item.isOutOfStock ? "opacity-50" : ""}`}
         >
           {/*  IMAGE */}
-
           <Link
             href={`/menu/product/${item.slug}`}
             className="relative h-20 w-20 shrink-0"
@@ -37,7 +36,14 @@ export default function MenuItems({ items }: MenuItemsProps) {
           {/*  TITLE & PRICE */}
           <div className="flex flex-col flex-1">
             <div className="flex items-center justify-between w-full">
-              <p className="font-bold">{item.title}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-bold">{item.title}</p>
+                {item.isOutOfStock && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-500 border-red-300">
+                    Sold out
+                  </Badge>
+                )}
+              </div>
               {item.price > 0 && (() => {
                 const discounted = applyDiscount(item.price, item.discountRate);
                 return discounted ? (

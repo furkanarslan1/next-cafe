@@ -53,7 +53,14 @@ export default async function ProductDetailPage({
 
           <div className="space-y-2">
             {/* TITLE */}
-            <h1 className="font-bold text-2xl">{product.title}</h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="font-bold text-2xl">{product.title}</h1>
+              {product.isOutOfStock && (
+                <span className="text-xs bg-red-100 text-red-600 px-2.5 py-1 rounded-full font-medium">
+                  Sold out
+                </span>
+              )}
+            </div>
             {/* PRICE */}
             {product.price > 0 && (() => {
               const discounted = applyDiscount(product.price, product.discountRate);

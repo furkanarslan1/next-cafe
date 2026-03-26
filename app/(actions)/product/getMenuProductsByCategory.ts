@@ -15,7 +15,6 @@ export async function getMenuProductsByCategory(
     .select("*")
     .in("category_id", categoryIds)
     .eq("is_active", true)
-    .eq("is_out_of_stock", false)
     .order("created_at", { ascending: false });
 
   if (error) return [];

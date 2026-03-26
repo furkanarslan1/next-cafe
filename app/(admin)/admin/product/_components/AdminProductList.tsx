@@ -101,7 +101,7 @@ export default function AdminProductList({ products }: ProductListProps) {
 
                 {/* PRICE */}
                 <TableCell className="hidden sm:table-cell">
-                  <span className="font-mono font-bold">₺{product.price}</span>
+                  <span className="font-mono font-bold">${product.price}</span>
                 </TableCell>
 
                 {/* STATUS */}
