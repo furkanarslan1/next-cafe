@@ -25,12 +25,13 @@ import {
   ChevronUp,
   Coffee,
   Tag,
-  Instagram,
+  Share2,
   FolderOpen,
   DollarSign,
   LogOut,
   QrCode,
   PackageX,
+  Eye,
 } from "lucide-react";
 import { signOutAction } from "@/app/(actions)/auth/signOutAction";
 import {
@@ -58,13 +59,14 @@ const items = [
       { title: "Categories", url: "/admin/categories", icon: FolderOpen },
       { title: "Prices", url: "/admin/prices", icon: DollarSign },
       { title: "Stock", url: "/admin/stock", icon: PackageX },
+      { title: "Visibility", url: "/admin/active", icon: Eye },
     ],
   },
   {
     group: "Hero Settings",
     links: [
       { title: "Brand Name", url: "/admin/heroSettings/brand", icon: Tag },
-      { title: "Social Media", url: "/admin/heroSettings/socialMedia", icon: Instagram },
+      { title: "Social Media", url: "/admin/heroSettings/socialMedia", icon: Share2 },
       { title: "Drinks Hero", url: "/admin/heroSettings/drinks", icon: ImageIcon },
       { title: "Meals Hero", url: "/admin/heroSettings/meals", icon: ImageIcon },
       { title: "Desserts Hero", url: "/admin/heroSettings/desserts", icon: ImageIcon },

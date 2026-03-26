@@ -16,7 +16,7 @@ export default async function MealsPage({ searchParams }: MealsPageProps) {
   const allCategories = await getCategories();
 
   const filteredCategories = allCategories.filter(
-    (cat) => cat.mainCategory === "meals" && cat.subType === Meal,
+    (cat) => cat.mainCategory === "meals" && cat.subType === Meal && cat.isActive,
   );
 
   const selectedCategory = category || filteredCategories[0]?.slug || "";

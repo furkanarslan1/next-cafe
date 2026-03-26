@@ -19,7 +19,7 @@ export default async function DessertsPage({
   const allCategories = await getCategories();
   const filteredCategory = allCategories.filter(
     (cat) =>
-      cat.mainCategory === "desserts" && cat.subType === selectedDessertType,
+      cat.mainCategory === "desserts" && cat.subType === selectedDessertType && cat.isActive,
   );
   const selectedCategory = category || filteredCategory[0]?.slug || "";
   const selectedCategoryObj = filteredCategory.find(

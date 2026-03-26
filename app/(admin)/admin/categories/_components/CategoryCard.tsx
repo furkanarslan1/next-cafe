@@ -2,8 +2,10 @@
 
 import { deleteCategoryAction } from "@/app/(actions)/category/deleteCategoryAction";
 import { updateCategoryAction } from "@/app/(actions)/category/updateCategoryAction";
+import { toggleCategoryActive } from "@/app/(actions)/category/toggleCategoryActive";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -31,6 +33,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
 
   const [label, setLabel] = useState(category.label);
   const [mainCategory, setMainCategory] = useState(category.mainCategory);
@@ -74,6 +77,17 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     setIsSaving(false);
   };
 
+  const handleToggleActive = async () => {
+    setIsToggling(true);
+    const result = await toggleCategoryActive(category.id, category.isActive);
+    if (result.success) {
+      toast.success(category.isActive ? "Category hidden." : "Category visible.");
+    } else {
+      toast.error(result.error ?? "Failed to update.");
+    }
+    setIsToggling(false);
+  };
+
   const handleCancel = () => {
     setLabel(category.label);
     setMainCategory(category.mainCategory);
@@ -82,7 +96,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
   };
 
   return (
-    <div className="border border-stone-200 rounded-xl p-4 shadow-sm bg-white flex flex-col gap-3">
+    <div className={`border rounded-xl p-4 shadow-sm bg-white flex flex-col gap-3 transition-opacity ${category.isActive ? "border-stone-200" : "border-stone-100 opacity-60"}`}>
       {isEditing ? (
         <>
           <Input
@@ -161,15 +175,22 @@ export default function CategoryCard({ category }: CategoryCardProps) {
               </Button>
             </div>
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            <span
-              className={`text-xs font-medium px-2 py-0.5 rounded-full ${mainCategoryColors[category.mainCategory] ?? "bg-stone-100 text-stone-600"}`}
-            >
-              {category.mainCategory}
-            </span>
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
-              {category.subType}
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex flex-wrap gap-1.5">
+              <span
+                className={`text-xs font-medium px-2 py-0.5 rounded-full ${mainCategoryColors[category.mainCategory] ?? "bg-stone-100 text-stone-600"}`}
+              >
+                {category.mainCategory}
+              </span>
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                {category.subType}
+              </span>
+            </div>
+            <Switch
+              checked={category.isActive}
+              disabled={isToggling}
+              onCheckedChange={handleToggleActive}
+            />
           </div>
         </>
       )}

@@ -17,7 +17,7 @@ export default async function DrinksPage({ searchParams }: DrinkPageProps) {
   const allCategories = await getCategories();
 
   const filteredCategories = allCategories.filter(
-    (cat) => cat.mainCategory === "drinks" && cat.subType === temperature,
+    (cat) => cat.mainCategory === "drinks" && cat.subType === temperature && cat.isActive,
   );
   const selectedCategory = category || filteredCategories[0]?.slug || "";
   const selectedCategoryObj = filteredCategories.find(
