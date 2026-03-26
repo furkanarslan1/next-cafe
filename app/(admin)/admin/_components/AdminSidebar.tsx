@@ -30,6 +30,7 @@ import {
   DollarSign,
   LogOut,
   QrCode,
+  PackageX,
 } from "lucide-react";
 import { signOutAction } from "@/app/(actions)/auth/signOutAction";
 import {
@@ -56,6 +57,7 @@ const items = [
       { title: "Add Product", url: "/admin/product/add", icon: PlusCircle },
       { title: "Categories", url: "/admin/categories", icon: FolderOpen },
       { title: "Prices", url: "/admin/prices", icon: DollarSign },
+      { title: "Stock", url: "/admin/stock", icon: PackageX },
     ],
   },
   {

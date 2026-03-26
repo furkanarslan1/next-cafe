@@ -26,29 +26,19 @@ export default function AdminProductList({ products }: ProductListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    const isConfirmed = confirm(
-      "Are you sure? This will permanently delete the product and its image.",
-    );
-    if (!isConfirmed) return;
+    if (!confirm("Are you sure? This will permanently delete the product and its image.")) return;
 
     setDeletingId(id);
     const loadingToast = toast.loading("Deleting product...");
+    const result = await deleteProduct(id);
+    toast.dismiss(loadingToast);
 
-    try {
-      const result = await deleteProduct(id);
-      toast.dismiss(loadingToast);
-
-      if (result.success) {
-        toast.success("Product deleted successfully.");
-      } else {
-        toast.error(result.error ?? "An error occurred.");
-      }
-    } catch {
-      toast.dismiss(loadingToast);
-      toast.error("An unexpected error occurred.");
-    } finally {
-      setDeletingId(null);
+    if (result.success) {
+      toast.success("Product deleted successfully.");
+    } else {
+      toast.error(result.error ?? "An error occurred.");
     }
+    setDeletingId(null);
   };
 
   return (
@@ -58,22 +48,15 @@ export default function AdminProductList({ products }: ProductListProps) {
           <TableRow className="bg-muted/50">
             <TableHead className="w-20">Image</TableHead>
             <TableHead className="font-medium">Product Details</TableHead>
-            <TableHead className="font-medium hidden sm:table-cell">
-              Price
-            </TableHead>
-            <TableHead className="font-medium hidden sm:table-cell">
-              Status
-            </TableHead>
+            <TableHead className="font-medium hidden sm:table-cell">Price</TableHead>
+            <TableHead className="font-medium hidden sm:table-cell">Status</TableHead>
             <TableHead className="font-medium">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {products.length === 0 ? (
             <TableRow>
-              <TableCell
-                colSpan={5}
-                className="h-24 text-center text-muted-foreground"
-              >
+              <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
                 No products found in this category.
               </TableCell>
             </TableRow>
