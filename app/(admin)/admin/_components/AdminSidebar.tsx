@@ -32,6 +32,7 @@ import {
   QrCode,
   PackageX,
   Eye,
+  Printer,
 } from "lucide-react";
 import { signOutAction } from "@/app/(actions)/auth/signOutAction";
 import {
@@ -48,6 +49,7 @@ const items = [
     links: [
       { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
       { title: "QR Code", url: "/admin/qr-code", icon: QrCode },
+      { title: "Print Menu", url: "/print-menu", icon: Printer },
       { title: "Back to Site", url: "/", icon: Home },
     ],
   },
